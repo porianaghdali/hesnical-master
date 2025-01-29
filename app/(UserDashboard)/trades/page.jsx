@@ -30,7 +30,7 @@ const Dashboard = ({}) => {
         {table.map((item, key) => {
           return (
             <div className="text-center border-r-2" key={key}>
-              {item.title}
+              {item.title} 
             </div>
           );
         })}
