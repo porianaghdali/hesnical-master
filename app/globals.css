@@ -3,16 +3,22 @@
 @tailwind utilities;
 
 :root {
- 
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-  
-  }
+@font-face {
+  font-family: "Raavi";
+  src: url(../public/fonts/Pro/Ravi-Medium.otf),
+    url(../public/fonts/Pro/Ravi-Medium.ttf),
+    url(../public/fonts/Pro/Ravi-Light.otf),
+    url(../public/fonts/Pro/Ravi-Regular.otf),
+    url(../public/fonts/Pro/RaviFaNum-Bold.ttf),
+    url(../public/fonts/Pro/RaviNoEn-Black.otf),
+    url(../public/fonts/Pro/Ravi-Regular.ttf);
 }
 
 body {
-
+  font-family: "Raavi", sans-serif;
 }
-
+@media (prefers-color-scheme: dark) {
+  :root {
+  }
+}

@@ -13,26 +13,26 @@ import {
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-const RadarChart = () => {
-  const data = {
-    labels: ['Speed', 'Strength', 'Agility', 'Intelligence', 'Charisma', 'Endurance'],
-    datasets: [
-      {
-        label: 'Player A',
-        data: [85, 90, 75, 70, 80, 95],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 2,
-      },
-      {
-        label: 'Player B',
-        data: [65, 75, 70, 80, 90, 85],
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 2,
-      },
-    ],
-  };
+const RadarChart = ({data}) => {
+  // const data = {
+  //   labels: ['Speed', 'Strength', 'Agility', 'Intelligence', 'Charisma', 'Endurance'],
+  //   datasets: [
+  //     {
+  //       label: 'Player A',
+  //       data: [85, 90, 75, 70, 80, 95],
+  //       backgroundColor: 'rgba(255, 99, 132, 0.2)',
+  //       borderColor: 'rgba(255, 99, 132, 1)',
+  //       borderWidth: 2,
+  //     },
+  //     {
+  //       label: 'Player B',
+  //       data: [65, 75, 70, 80, 90, 85],
+  //       backgroundColor: 'rgba(54, 162, 235, 0.2)',
+  //       borderColor: 'rgba(54, 162, 235, 1)',
+  //       borderWidth: 2,
+  //     },
+  //   ],
+  // };
 
   const options = {
     responsive: true,

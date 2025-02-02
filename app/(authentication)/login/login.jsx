@@ -75,18 +75,14 @@ export default function Login() {
             secure: true,
             sameSite: "Strict",
           });
-          console.log("User role saved:", role);
         } else {
-          console.warn("Role not found in token.");
         }
 
         // هدایت به صفحه داشبورد
         router.push("/dashboard");
       } else {
-        console.error("Authentication failed");
       }
     } catch (error) {
-      console.error("Error during login:", error);
     }
   };
   return (

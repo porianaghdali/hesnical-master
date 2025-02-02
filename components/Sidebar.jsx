@@ -33,7 +33,7 @@ const Sidebar = () => {
   return (
     <>
       <div
-        className={` bg-gray-800 text-white h-screen p-4 transition-all duration-300  z-30 relative ${showMenu ? "w-64" : "w-16"
+        className={` bg-[#120C3C] text-white h-screen p-4 transition-all duration-300  z-30 relative ${showMenu ? "w-64" : "w-16"
           }`}
       >
         <button
@@ -51,24 +51,20 @@ const Sidebar = () => {
         <ul>
           <li>
             <Link href="/dashboard" className="block py-2 px-4 hover:bg-gray-700">
-              {showMenu ? <p>Dashboard</p> : Demo}
+              {showMenu ? <p>داشبورد</p> : Demo}
             </Link>
           </li>
           <li>
             <Link href="/trades" className="block py-2 px-4 hover:bg-gray-700">
-              {showMenu ? <p>trades</p> : Demo}
+              {showMenu ? <p>معاملات</p> : Demo}
             </Link>
           </li>
           <li>
             <Link href="/settings" className="block py-2 px-4 hover:bg-gray-700">
-              {showMenu ? <p>Settings</p> : Demo}
+              {showMenu ? <p>تنظیمات</p> : Demo}
             </Link>
           </li>
-          <li>
-            <Link href="/login" className="block py-2 px-4 hover:bg-gray-700">
-              {showMenu ? <p>Login</p> : Demo}
-            </Link>
-          </li>
+          
         </ul>
         <div className="absolute w-full right-0 p-4   bottom-0">
           <Link href="/dashboard" className="block px-4 py-2 text-center  hover:bg-gray-700">

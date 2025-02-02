@@ -21,7 +21,6 @@ const Dashboard = ({}) => {
   if (!UserActivities) {
     return <div>در حال بارگذاری...</div>; // می‌توانید این را به کامپوننت لودینگ سفارشی تغییر دهید
   }
-  console.log(UserActivities?.data.$values, "UserActivities");
   return (
     <div>
       <h1 className="text-2xl font-bold">trades</h1>

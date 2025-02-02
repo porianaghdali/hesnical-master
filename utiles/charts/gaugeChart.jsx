@@ -6,24 +6,24 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
-const KilometerChart = () => {
-  const data = {
-    labels: [
-        'Red',
-        'Yellow',
-        'Blue'
-    ], // داده‌ها برای قسمت باقی‌مانده و استفاده‌شده
-    datasets: [
-      {
-        data: [50,20, 30], // درصد کیلومتر باقی‌مانده و استفاده‌شده
-        backgroundColor: ["#00FF00", "#FF0000","blue"], // رنگ‌های مختلف برای باقی‌مانده و استفاده‌شده
-        borderWidth: 1,
-        cutout: "80%", // ایجاد فضای خالی در وسط برای شبیه‌سازی کیلومتر
-        rotation: -90, // شروع چارت از بالا (برای قرار گرفتن از بالا)
-        circumference: 180, // نیم‌دایره
-      },
-    ],
-  };
+const KilometerChart = ({data}) => {
+  // const data = {
+  //   labels: [
+  //       'Red',
+  //       'Yellow',
+  //       'Blue'
+  //   ], // داده‌ها برای قسمت باقی‌مانده و استفاده‌شده
+  //   datasets: [
+  //     {
+  //       data: [50,20, 30], // درصد کیلومتر باقی‌مانده و استفاده‌شده
+  //       backgroundColor: ["#00FF00", "#FF0000","blue"], // رنگ‌های مختلف برای باقی‌مانده و استفاده‌شده
+  //       borderWidth: 1,
+  //       cutout: "80%", // ایجاد فضای خالی در وسط برای شبیه‌سازی کیلومتر
+  //       rotation: -90, // شروع چارت از بالا (برای قرار گرفتن از بالا)
+  //       circumference: 180, // نیم‌دایره
+  //     },
+  //   ],
+  // };
 
   const options = {
     responsive: true,
@@ -33,7 +33,7 @@ const KilometerChart = () => {
       },
       title: {
         display: true,
-        text: "Kilometer Gauge", // عنوان نمودار
+        text: "درصد سود و ضرر", // عنوان نمودار
       },
     },
     animation: {

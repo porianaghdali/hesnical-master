@@ -22,21 +22,7 @@ const Navbar = () => {
       <div className="text-xl font-bold">MyBrand</div>
       <nav>
         <ul className="flex space-x-4">
-          <li>
-            <a href="/dashboard" className="hover:text-gray-200">
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="/widgets" className="hover:text-gray-200">
-              Widgets
-            </a>
-          </li>
-          <li>
-            <a href="/settings" className="hover:text-gray-200">
-              Settings
-            </a>
-          </li>
+        
           <li>
           <button onClick={handleLogout} className="logout-button">
               خروج

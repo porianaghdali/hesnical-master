@@ -36,7 +36,7 @@ return (<UserProvider>
       </div>
 
       <div className="flex-1 flex flex-col">
-        <div className="bg-gray-400 text-white p-4 grid grid-cols-12 top-0 left-0 w-full z-10">
+        <div className="bg-[#4D3C8E] text-white p-4 grid grid-cols-12 top-0 left-0 w-full z-10">
           <div
             className={`lg:hidden absolute top-0 right-0  z-40 transition-all duration-300 ease-out bg-gray-3000 ${
               ShowMenu ? " translate-x-0" : "translate-x-64"

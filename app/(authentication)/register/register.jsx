@@ -1,9 +1,9 @@
-'use client'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+"use client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Register() {
-  const router = useRouter()
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -24,7 +24,6 @@ export default function Register() {
   const [success, setSuccess] = useState(null);
   const [step, setStep] = useState(1); // مراحل فرم (مرحله 1 یا 2)
 
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -43,10 +42,9 @@ export default function Register() {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/register`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/identity/user`,
         formData
       );
-
       setSuccess("ثبت‌نام با موفقیت انجام شد! حالا می‌توانید وارد شوید.");
       setFormData({
         firstName: "",
@@ -85,7 +83,9 @@ export default function Register() {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">نام خانوادگی</label>
+        <label className="block text-sm font-medium text-gray-700">
+          نام خانوادگی
+        </label>
         <input
           type="text"
           id="lastName"
@@ -97,7 +97,9 @@ export default function Register() {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">کد ملی</label>
+        <label className="block text-sm font-medium text-gray-700">
+          کد ملی
+        </label>
         <input
           type="text"
           id="nationalCode"
@@ -109,7 +111,9 @@ export default function Register() {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">حساب کاربری</label>
+        <label className="block text-sm font-medium text-gray-700">
+          حساب کاربری
+        </label>
         <input
           type="text"
           id="account"
@@ -121,7 +125,9 @@ export default function Register() {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">کلمه عبور سرمایه گذاری</label>
+        <label className="block text-sm font-medium text-gray-700">
+          کلمه عبور سرمایه گذاری
+        </label>
         <input
           type="text"
           id="investmentPassword"
@@ -169,7 +175,9 @@ export default function Register() {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">نام کاربری</label>
+        <label className="block text-sm font-medium text-gray-700">
+          نام کاربری
+        </label>
         <input
           type="text"
           id="userName"
@@ -181,7 +189,9 @@ export default function Register() {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">رمز عبور</label>
+        <label className="block text-sm font-medium text-gray-700">
+          رمز عبور
+        </label>
         <input
           type="password"
           id="password"
@@ -193,7 +203,9 @@ export default function Register() {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">تایید رمز عبور</label>
+        <label className="block text-sm font-medium text-gray-700">
+          تایید رمز عبور
+        </label>
         <input
           type="password"
           id="confirmPassword"
@@ -205,7 +217,9 @@ export default function Register() {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">شماره تلفن</label>
+        <label className="block text-sm font-medium text-gray-700">
+          شماره تلفن
+        </label>
         <input
           type="text"
           id="phoneNumber"
@@ -243,12 +257,14 @@ export default function Register() {
   );
 
   return (
-   <><div className="min-h-screen flex items-center justify-center bg-gray-100">
-   <div className="w-full max-w-md">
-     {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-     {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
-     {step === 1 ? renderStep1() : renderStep2()}
-   </div>
- </div></>
-  )
+    <>
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="w-full max-w-md">
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+          {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
+          {step === 1 ? renderStep1() : renderStep2()}
+        </div>
+      </div>
+    </>
+  );
 }
