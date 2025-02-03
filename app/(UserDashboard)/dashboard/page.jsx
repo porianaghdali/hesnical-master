@@ -371,7 +371,7 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-6 gap-4 p-10">
-        <div className="col-span-6 lg:col-span-6">
+        <div  className="col-span-6 lg:col-span-6">
           <div className="grid grid-cols-4 gap-4">
             <Card
               backgroundColor="rgba(13, 110, 253, 1)"
@@ -396,47 +396,47 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="col-span-6 lg:col-span-3">
+        <div dir="ltr" className="col-span-6 lg:col-span-3">
           <LineChart data={filteredChartData} options={options} />
         </div>
 
-        <div className="col-span-6 lg:col-span-3">
+        <div dir="ltr" className="col-span-6 lg:col-span-3">
           <BarChart data={tradeHoursData} options={options} />
         </div>
 
-        <div className="col-span-6 lg:col-span-3">
+        <div dir="ltr" className="col-span-6 lg:col-span-3">
           <BarChart data={buySellPerSymbol} options={options} />
         </div>
 
-        <div className="col-span-6 lg:col-span-3">
+        <div dir="ltr" className="col-span-6 lg:col-span-3">
           <BarChart data={profitBySymbolData} options={options} />
         </div>
 
-        <div className="col-span-6 lg:col-span-2">
+        <div dir="ltr" className="col-span-6 lg:col-span-2">
           <DoughnutChart data={volumeBySymbolData} options={options} />
         </div>
 
-        <div className="col-span-6 lg:col-span-2">
+        <div dir="ltr" className="col-span-6 lg:col-span-2">
           <PieChart data={volumeByTradeType} options={options} />
         </div>
 
-        <div className="col-span-6 lg:col-span-2">
+        <div dir="ltr" className="col-span-6 lg:col-span-2">
           <DoughnutChart data={symbols_Count_data} options={options} />
         </div>
 
-        <div className="col-span-6 lg:col-span-2">
+        <div dir="ltr" className="col-span-6 lg:col-span-2">
           <PolarAreaChart data={polarData} options={options} />
         </div>
 
-        <div className="col-span-6 lg:col-span-2">
+        <div dir="ltr" className="col-span-6 lg:col-span-2">
           <GaugeChart data={gaugeData} options={options} />
         </div>
 
-        <div className="col-span-6 lg:col-span-2">
+        <div dir="ltr" className="col-span-6 lg:col-span-2">
           <PieChart data={tradeTypeData} options={options} />
         </div>
 
-        <div className="col-span-6 lg:col-span-6 grid justify-center">
+        <div dir="ltr" className="col-span-6 lg:col-span-6 grid justify-center">
           <PersianCalendar trades={trades} />{" "}
         </div>
       </div>

@@ -18,7 +18,7 @@ const Card = ({ title, value,backgroundColor }) => {
       <div className="text-xl font-semibold text-white mb-4">
         {title}
       </div>
-      <div className="text-2xl font-bold text-white">
+      <div dir="ltr" className="text-2xl font-bold text-white">
         {value}
       </div>
     </div>

@@ -29,7 +29,7 @@ const Dashboard = ({}) => {
         {table.map((item, key) => {
           return (
             <div className="text-center border-r-2" key={key}>
-              {item.title} 
+              {item.title}
             </div>
           );
         })}
@@ -37,26 +37,26 @@ const Dashboard = ({}) => {
       <div className="grid  p-2  gap-2 border">
         {UserActivities?.data.$values.map((item, key) => {
           return (
-            <>
-              <div className="text-center grid grid-cols-12" key={key}>
+            <div key={key}>
+              <div className="text-center grid grid-cols-12">
                 <div className=" font-bold">
                   {item.symbol.replace(/'/g, "")}
                 </div>
                 <div>{item.comment.replace(/'/g, "")}</div>
-                <div>{item.commission}</div>
-                <div>{item.entry}</div>
-                <div>{item.externalId.replace(/'/g, "")}</div>
-                <div>{item.fee}</div>
-                <div>{item.magic}</div>
-                <div>{Math.round(item.price * 100) / 100}</div>
-                <div>{Math.round(item.profit * 100) / 100}</div>
-                <div>{Math.round(item.swap * 100) / 100}</div>
+                <div dir="ltr">{item.commission}</div>
+                <div dir="ltr">{item.entry}</div>
+                <div dir="ltr">{item.externalId.replace(/'/g, "")}</div>
+                <div dir="ltr">{item.fee}</div>
+                <div dir="ltr">{item.magic}</div>
+                <div dir="ltr">{Math.round(item.price * 100) / 100}</div>
+                <div dir="ltr">{Math.round(item.profit * 100) / 100}</div>
+                <div dir="ltr">{Math.round(item.swap * 100) / 100}</div>
 
                 <div>{new Date(item.time * 1000).toLocaleString()}</div>
                 <div>{Math.round(item.volume * 100) / 100}</div>
               </div>
               <hr />
-            </>
+            </div>
           );
         })}
       </div>

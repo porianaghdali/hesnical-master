@@ -1,41 +1,41 @@
-/* استایل‌های خاص برای تبدیل روزها به مستطیل */
 .rmdp-day span {
-  border-radius: 8px !important; /* حذف دایره و تبدیل به مستطیل */
-  background-color: transparent !important; /* پس‌زمینه شفاف */
-  color: rgb(53, 53, 53) !important; /* رنگ متن روز */
-  bottom: auto !important;
+  border-radius: 8px !important;
+  /* background-color: transparent !important;  */
+  /* bottom: auto !important; */
   text-align: end !important;
+
+  font-weight: bold;
+    width: 100%;
+    height: 100%;
+    top: 0 !important;
+
+    right: 0 !important;
 }
 .rmdp-day {
   border: 0.1px solid gainsboro;
   margin: 1.5px;
-  border-radius: 8px !important; /* حذف دایره و تبدیل به مستطیل */
-  padding: 2vw 2.75vw !important; /* تنظیم فاصله درون سلول */
-  background-color: #f4f6f8 !important; /* پس‌زمینه شفاف */
-  color: black !important; /* رنگ متن روز */
+  border-radius: 8px !important;
+  padding: 2vw 2.75vw !important;
+  background-color: #f4f6f8 !important;
+  color: black !important;
 }
 
-/* برای روزهای انتخاب‌شده */
 .rmdp-day.rmdp-selected span:not(.highlight) {
-  border-radius: 8px !important; /* اطمینان از مستطیل بودن */
+  border-radius: 8px !important;
   color: black;
+  
   box-shadow: 0 0 0px #8798ad !important;
 }
 .rmdp-day.rmdp-selected {
-  border-radius: 8px !important; /* اطمینان از مستطیل بودن */
+  border-radius: 8px !important;
   color: black;
   box-shadow: 0 0 3px #8798ad !important;
 }
 
-/* برای روزهایی که هاور می‌شوند */
 .rmdp-day:hover {
-  background-color: rgb(
-    221,
-    217,
-    217
-  ) !important; /* رنگ پس‌زمینه در حالت هاور */
-  color: black !important; /* رنگ متن */
-  border-radius: 8px !important; /* اطمینان از مستطیل بودن */
+  background-color: rgb(221, 217, 217) !important;
+  color: black !important;
+  border-radius: 8px !important;
 }
 .rmdp-week {
   display: grid !important;

@@ -1,7 +1,7 @@
 "use client"
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-
+import Image from "next/image";
 const Navbar = () => {
   
   const router = useRouter();
@@ -19,7 +19,15 @@ const Navbar = () => {
 
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="text-xl font-bold">MyBrand</div>
+      <div className="text-xl font-bold"><Image
+          
+          height={60}
+          width={60}
+          sizes="40px"
+          className="rounded-circle"
+          src="/assets/Hesnical_Logo.png"
+          alt="user@email.com"
+        /></div>
       <nav>
         <ul className="flex space-x-4">
         
