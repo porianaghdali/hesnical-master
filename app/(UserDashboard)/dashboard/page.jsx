@@ -9,73 +9,24 @@ import GaugeChart from "@/utiles/charts/gaugeChart";
 import PersianCalendar from "@/utiles/calendar";
 import Card from "@/utiles/card";
 import { useUser } from "@/context/UserContext";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 const Dashboard = () => {
   const { UserData, UserActivities } = useUser();
 
   const activities = UserActivities?.data.$values || [];
-  console.log(
-    "%capp(UserDashboard)dashboardpage.jsx:291 activities",
-    "color: #007acc;",
-    activities
-  );
-
-  // پردازش داده‌ها
   const datesArray = activities.map((item) => new Date(item.time * 1000));
-  const pricesArray = activities.map(
-    (item) => Math.round(item.price * 100) / 100
-  );
-  const volumesArray = activities.map(
-    (item) => Math.round(item.volume * 10000) / 10000
-  );
   const profitsArray = activities.map(
     (item) => Math.round(item.profit * 100) / 100
   );
   const symbolsArray = activities.map((item) => item.symbol);
   const typesArray = activities.map((item) => item.type);
-
-  // گروه‌بندی سود و زیان بر اساس ماه
-  const monthlyProfitData = useMemo(() => {
-    const monthlyData = {};
-
-    datesArray.forEach((date, index) => {
-      const monthYearKey = `${date.getFullYear()}-${date.getMonth() + 1}`; // کلید ماه و سال (مثلاً 2023-10)
-      if (!monthlyData[monthYearKey]) {
-        monthlyData[monthYearKey] = 0;
-      }
-      monthlyData[monthYearKey] += profitsArray[index]; // جمع سود و زیان هر ماه
-    });
-
-    return monthlyData;
-  }, [datesArray, profitsArray]);
-
-  // تبدیل داده‌های ماهانه به فرمت نمودار
-  const monthlyProfitChartData = {
-    labels: Object.keys(monthlyProfitData).map((key) => {
-      const [year, month] = key.split("-");
-      return `${year}/${month}`; // فرمت تاریخ (مثلاً 2023/10)
-    }),
-    datasets: [
-      {
-        label: "سود و زیان ماهانه",
-        data: Object.values(monthlyProfitData),
-        backgroundColor: "rgba(54, 162, 235, .1)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  // تعداد معاملات هر نماد
   const symbolsCount = useMemo(() => {
     return symbolsArray.reduce((acc, curr) => {
       acc[curr] = (acc[curr] || 0) + 1;
       return acc;
     }, {});
   }, [symbolsArray]);
-
-  // حجم معاملات هر نماد
   const symbolsVolume = useMemo(() => {
     return activities.reduce((acc, item) => {
       acc[item.symbol] = (acc[item.symbol] || 0) + item.volume;
@@ -94,8 +45,6 @@ const Dashboard = () => {
       },
     ],
   };
-
-  // سودآوری هر نماد
   const symbolsProfit = useMemo(() => {
     return activities.reduce((acc, item) => {
       acc[item.symbol] = (acc[item.symbol] || 0) + item.profit;
@@ -114,8 +63,6 @@ const Dashboard = () => {
       },
     ],
   };
-
-  // تعداد خرید و فروش
   const tradeTypes = useMemo(() => {
     return typesArray.reduce(
       (acc, type) => {
@@ -126,14 +73,10 @@ const Dashboard = () => {
       { Buy: 0, Sell: 0 }
     );
   }, [typesArray]);
-
-  // میانگین سود و زیان هر معامله
   const averageProfitPerTrade = useMemo(() => {
     const totalProfit = profitsArray.reduce((acc, profit) => acc + profit, 0);
     return (totalProfit / profitsArray.length).toFixed(2);
   }, [profitsArray]);
-
-  // بیشترین و کمترین معامله سودده و زیان‌ده
   const maxProfitTrade = useMemo(
     () => Math.max(...profitsArray),
     [profitsArray]
@@ -142,8 +85,6 @@ const Dashboard = () => {
     () => Math.min(...profitsArray),
     [profitsArray]
   );
-
-  // زمان‌های پرتکرار معامله
   const tradeHours = useMemo(() => {
     return activities.reduce((acc, item) => {
       const hour = new Date(item.time * 1000).getHours();
@@ -151,30 +92,10 @@ const Dashboard = () => {
       return acc;
     }, {});
   }, [activities]);
-
-  // ضریب برد معاملات
   const winRate = useMemo(() => {
     const winningTrades = profitsArray.filter((profit) => profit > 0).length;
     return ((winningTrades / profitsArray.length) * 100).toFixed(2);
   }, [profitsArray]);
-
-  // داده‌های نمودارها
-  const profit_dates_data = {
-    labels: datesArray.map((date) => date.toLocaleString()),
-    datasets: [
-      {
-        label: "سود در طول زمان",
-        data: profitsArray,
-        backgroundColor: profitsArray.map(
-          (profit) =>
-            profit < 0 ? "rgba(255, 99, 132, 1)" : "rgba(54, 162, 235, 1)" // Red for negative, Blue for positive
-        ),
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
   const symbols_Count_data = {
     labels: Object.keys(symbolsCount),
     datasets: [
@@ -187,7 +108,6 @@ const Dashboard = () => {
       },
     ],
   };
-
   const tradeTypeData = {
     labels: ["خرید", "فروش"],
     datasets: [
@@ -200,7 +120,6 @@ const Dashboard = () => {
       },
     ],
   };
-
   const tradeHoursData = {
     labels: Object.keys(tradeHours).map((hour) => `${hour}:00`),
     datasets: [
@@ -213,7 +132,6 @@ const Dashboard = () => {
       },
     ],
   };
-
   const volumeByTradeType = useMemo(() => {
     const volumeData = activities.reduce(
       (acc, item) => {
@@ -240,7 +158,6 @@ const Dashboard = () => {
       ],
     };
   }, [activities]);
-
   const buySellPerSymbol = useMemo(() => {
     const buySellCount = activities.reduce((acc, item) => {
       if (!acc[item.symbol]) acc[item.symbol] = { Buy: 0, Sell: 0 };
@@ -273,7 +190,6 @@ const Dashboard = () => {
       ],
     };
   }, [activities]);
-
   const gaugeData = {
     labels: ["درصد سود", "درصد ضرر"],
     datasets: [
@@ -286,7 +202,6 @@ const Dashboard = () => {
       },
     ],
   };
-
   const polarData = {
     labels: Object.keys(symbolsCount),
     datasets: [
@@ -307,47 +222,153 @@ const Dashboard = () => {
       },
     ],
   };
-
   const options = {
     plugins: {
       legend: {
         labels: {
           font: {
-            family: 'Raavi',  // تغییر فونت برای legend
-            size: 16,         // تغییر سایز فونت
+            family: "Raavi",
+            size: 16,
           },
         },
       },
-  },scales: {
-    x: {
-      ticks: {
-        font: {
-          family: 'Raavi',  // تغییر فونت برای محور X
-          size: 14,         // تغییر سایز فونت
+    },
+    scales: {
+      x: {
+        ticks: {
+          font: {
+            family: "Raavi",
+            size: 14,
+          },
+        },
+      },
+      y: {
+        ticks: {
+          font: {
+            family: "Raavi",
+            size: 14,
+          },
         },
       },
     },
-    y: {
-      ticks: {
-        font: {
-          family: 'Raavi',  // تغییر فونت برای محور Y
-          size: 14,         // تغییر سایز فونت
-        },
+  };
+  const [filterType, setFilterType] = useState("none");
+  const filterDataByType = useMemo(() => {
+    if (filterType === "none") {
+      // اگر فیلتر none باشد، تمام داده‌ها را به صورت لحظه‌ای برگردان
+      return {
+        labels: datesArray.map((date) => date.toLocaleString()),
+        profits: profitsArray,
+      };
+    }
+
+    const filteredData = {};
+    datesArray.forEach((date, index) => {
+      let key;
+      if (filterType === "daily") {
+        key = date.toLocaleDateString();
+      } else if (filterType === "weekly") {
+        const weekStart = new Date(date);
+        weekStart.setDate(date.getDate() - date.getDay());
+        key = `${weekStart.getFullYear()}-${
+          weekStart.getMonth() + 1
+        }-${weekStart.getDate()}`;
+      } else if (filterType === "monthly") {
+        key = `${date.getFullYear()}-${date.getMonth() + 1}`;
+      }
+
+      if (!filteredData[key]) {
+        filteredData[key] = 0;
+      }
+      filteredData[key] += profitsArray[index];
+    });
+
+    return filteredData;
+  }, [datesArray, profitsArray, filterType]);
+
+  const filteredChartData = {
+    labels:
+      filterType === "none"
+        ? datesArray.map((date) => date.toLocaleString()) // نمایش تمام تاریخ‌ها
+        : Object.keys(filterDataByType).map((key) => {
+            if (filterType === "daily") {
+              return key;
+            } else if (filterType === "weekly") {
+              return `هفته ${key}`;
+            } else if (filterType === "monthly") {
+              return `ماه ${key}`;
+            }
+          }),
+    datasets: [
+      {
+        label:
+          filterType === "none"
+            ? "سود و زیان لحظه‌ای"
+            : `سود و زیان ${
+                filterType === "daily"
+                  ? "روزانه"
+                  : filterType === "weekly"
+                  ? "هفتگی"
+                  : "ماهانه"
+              }`,
+        data:
+          filterType === "none"
+            ? profitsArray // نمایش تمام سود و زیان‌ها
+            : Object.values(filterDataByType),
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 1,
       },
-    },
-  },
-  }
-  if (!UserData) {
-    return <div>در حال بارگذاری...</div>;
-  }
+    ],
+  };
   const trades = activities?.map((trade) => ({
     time: trade.time,
     profit: trade.profit,
   }));
+
+  if (!UserData) {
+    return <div>در حال بارگذاری...</div>;
+  }
+
   return (
     <div className="">
       <h1 className="text-2xl font-bold">داشبورد</h1>
       <h1 className="text-2xl font-bold">{UserData?.data.firstName}</h1>
+
+      <div className="flex gap-4 mb-4">
+        <button
+          onClick={() => setFilterType("none")}
+          className={`px-4 py-2 rounded ${
+            filterType === "none" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          بدون فیلتر
+        </button>
+        <button
+          onClick={() => setFilterType("daily")}
+          className={`px-4 py-2 rounded ${
+            filterType === "daily" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          روزانه
+        </button>
+        <button
+          onClick={() => setFilterType("weekly")}
+          className={`px-4 py-2 rounded ${
+            filterType === "weekly" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          هفتگی
+        </button>
+        <button
+          onClick={() => setFilterType("monthly")}
+          className={`px-4 py-2 rounded ${
+            filterType === "monthly" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          ماهانه
+        </button>
+      </div>
 
       <div className="grid grid-cols-6 gap-4 p-10">
         <div className="col-span-6 lg:col-span-6">
@@ -375,62 +396,46 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* نمودار سود و زیان در طول زمان */}
         <div className="col-span-6 lg:col-span-3">
-          <LineChart data={profit_dates_data} options={options} />
+          <LineChart data={filteredChartData} options={options} />
         </div>
 
-        {/* نمودار سود و زیان ماهانه */}
         <div className="col-span-6 lg:col-span-3">
-          <LineChart data={monthlyProfitChartData} options={options} />
-        </div>
-
-        {/* نمودار زمان‌های پرتکرار معامله */}
-        <div className="col-span-6 lg:col-span-2">
           <BarChart data={tradeHoursData} options={options} />
         </div>
 
-        {/* نمودار خرید و فروش هر نماد */}
-        <div className="col-span-6 lg:col-span-2">
+        <div className="col-span-6 lg:col-span-3">
           <BarChart data={buySellPerSymbol} options={options} />
         </div>
 
-        {/* نمودار سودآوری هر نماد */}
-        <div className="col-span-6 lg:col-span-2">
+        <div className="col-span-6 lg:col-span-3">
           <BarChart data={profitBySymbolData} options={options} />
         </div>
 
-        {/* نمودار حجم معاملات هر نماد */}
         <div className="col-span-6 lg:col-span-2">
           <DoughnutChart data={volumeBySymbolData} options={options} />
         </div>
 
-        {/* نمودار حجم معاملات خرید و فروش */}
         <div className="col-span-6 lg:col-span-2">
           <PieChart data={volumeByTradeType} options={options} />
         </div>
 
-        {/* نمودار تعداد معاملات هر نماد */}
         <div className="col-span-6 lg:col-span-2">
           <DoughnutChart data={symbols_Count_data} options={options} />
         </div>
 
-        {/* نمودار PolarArea برای تعداد معاملات هر نماد */}
         <div className="col-span-6 lg:col-span-2">
           <PolarAreaChart data={polarData} options={options} />
         </div>
 
-        {/* نمودار Gauge برای نمایش ضریب برد معاملات */}
         <div className="col-span-6 lg:col-span-2">
           <GaugeChart data={gaugeData} options={options} />
         </div>
 
-        {/* نمودار نسبت خرید و فروش‌ها */}
         <div className="col-span-6 lg:col-span-2">
           <PieChart data={tradeTypeData} options={options} />
         </div>
 
-        {/* تقویم */}
         <div className="col-span-6 lg:col-span-6 grid justify-center">
           <PersianCalendar trades={trades} />{" "}
         </div>
