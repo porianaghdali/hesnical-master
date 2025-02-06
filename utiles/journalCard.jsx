@@ -1,6 +1,8 @@
 import { useState } from "react";
 import LineChart from "@/utiles/charts/lineChart";
 import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,6 +13,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import AreaChart from "./charts/AreaChart";
 
 ChartJS.register(
   CategoryScale,
@@ -30,95 +33,36 @@ const JournalCard = ({
   totalProfit,
   totalLoss,
   commission,
+  groupedTrades,
 }) => {
-  //       const [filterType, setFilterType] = useState("none");
-  //       const datesArray = activities.map((item) => new Date(item.time * 1000));
-
-  //   const filteredChartData = {
-  //     labels:
-  //       filterType === "none"
-  //         ? datesArray.map((date) => date.toLocaleString()) // نمایش تمام تاریخ‌ها
-  //         : Object.keys(filterDataByType).map((key) => {
-  //             if (filterType === "daily") {
-  //               return key;
-  //             } else if (filterType === "weekly") {
-  //               return `هفته ${key}`;
-  //             } else if (filterType === "monthly") {
-  //               return `ماه ${key}`;
-  //             }
-  //           }),
-  //     datasets: [
-  //       {
-  //         label:
-  //           filterType === "none"
-  //             ? "سود و زیان لحظه‌ای"
-  //             : `سود و زیان ${
-  //                 filterType === "daily"
-  //                   ? "روزانه"
-  //                   : filterType === "weekly"
-  //                   ? "هفتگی"
-  //                   : "ماهانه"
-  //               }`,
-  //         data:
-  //           filterType === "none"
-  //             ? profitsArray // نمایش تمام سود و زیان‌ها
-  //             : Object.values(filterDataByType),
-  //         backgroundColor: "rgba(54, 162, 235, 0.2)",
-  //         borderColor: "rgba(54, 162, 235, 1)",
-  //         borderWidth: 1,
-  //       },
-  //     ],
-  //   };
-  const options = {
-    plugins: {
-      legend: {
-        display: false,
-        labels: {
-          font: {
-            family: "Raavi",
-            size: 10,
-          },
-        },
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-          font: {
-            family: "Raavi",
-            size: 10,
-          },
-        },
-      },
-      y: {
-        ticks: {
-          font: {
-            family: "Raavi",
-            size: 10,
-          },
-        },
-      },
-    },
-  };
-
   const data = {
-    labels: [0, 1],
+    labels: groupedTrades.map((item) => {
+      return new Date(item.time * 1000)
+        .toISOString()
+        .split("T")[1]
+        .split(".000Z")[0];
+    }),
     datasets: [
       {
-        backgroundColor: "transparent",
-        color: "transparent",
-        label: "My First Dataset",
-        data: [0, netProfit],
-        fill: false,
-        borderColor: "rgb(75, 192, 192)",
-        tension: 0.1,
+        data: groupedTrades.map((item) => {
+          return item.profit;
+        }),
+         fill: {
+            target: 'origin',
+            above: 'rgba(75, 192, 192, 0.2)',   // Area will be red above the origin
+            below: 'rgba(192, 75, 192, 0.2)'    // And blue below the origin
+          },
+        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        tension: 0.4,
       },
     ],
   };
+
   return (
     <div className="grid gap-4">
       <div className="flex justify-between py-4">
-        <div>{date}</div>
+        <div>{date.split("T")[0]}</div>
         <div className={netProfit > 0 ? "text-green-500" : "text-red-500"}>
           NET P/L: {Math.round(netProfit * 100) / 100}
         </div>
@@ -133,8 +77,9 @@ const JournalCard = ({
       <div className=" grid grid-cols-6 gap-2">
         <div className="">
           {" "}
-          <Line data={data} options={options} />
+          <AreaChart data={data} />{" "}
         </div>
+        <div>تعداد معاملات: {groupedTrades.length}</div>
         <div className="">
           <p className="">
             سود کلی:
@@ -152,6 +97,7 @@ const JournalCard = ({
         <div className={balance > 0 ? "text-green-500" : "text-red-500"}>
           بالانس: {Math.round(balance * 100) / 100}
         </div>
+
         <div className={swap > 0 ? "text-green-500" : "text-red-500"}>
           سواپ: {Math.round(swap * 100) / 100}
         </div>
