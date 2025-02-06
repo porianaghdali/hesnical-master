@@ -16,9 +16,33 @@ const Dashboard = () => {
 
   const activities = UserActivities?.data.$values || [];
   const datesArray = activities.map((item) => new Date(item.time * 1000));
+
+
   const profitsArray = activities.map(
-    (item) => Math.round(item.profit * 100) / 100
+    (item) => item.profit 
   );
+  const commissionsArray = activities.map(
+    (item) => item.commission 
+  );
+
+
+  const Gross_Profit = profitsArray?.reduce((total, number) =>number>=0? total + number:total, 0);
+  const Gross__Loss = profitsArray?.reduce((total, number) =>number<0? total + number:total, 0);
+
+
+
+  const feesArray = activities.map(
+    (item) => item.fee
+  );
+  const totalFee = feesArray?.reduce((total, number) => total + number, 0);
+  const totalCommission = commissionsArray?.reduce((total, number) => total + number, 0);
+
+
+
+
+
+
+
   const symbolsArray = activities.map((item) => item.symbol);
   const typesArray = activities.map((item) => item.type);
   const symbolsCount = useMemo(() => {
@@ -375,23 +399,28 @@ const Dashboard = () => {
           <div className="grid grid-cols-4 gap-4">
             <Card
               backgroundColor="rgba(13, 110, 253, 1)"
-              title="میانگین سود و زیان معاملات"
-              value={`${averageProfitPerTrade} USD`}
+              title="سود یا زیان خالص"
+              value={Math.round(Gross_Profit+Gross__Loss-totalFee-totalCommission*100)/100} 
             />
             <Card
               backgroundColor="rgba(255, 193, 7, 1)"
               title="ضریب برد معاملات"
-              value={`${winRate}%`}
+              value={winRate}
+            />
+            <Card
+              backgroundColor="rgba(220, 53, 69, 1)"
+              title="نسبت سود به زیان"
+              value={Math.abs(Math.round(Gross_Profit*100/Gross__Loss)/100)}
             />
             <Card
               backgroundColor="rgba(220, 53, 69, 1)"
               title="بیشترین سود در یک معامله"
-              value={`${maxProfitTrade} USD`}
+              value={maxProfitTrade} 
             />
             <Card
               backgroundColor="rgba(13, 202, 240, 1)"
               title="بیشترین ضرر در یک معامله"
-              value={`${minProfitTrade} USD`}
+              value={minProfitTrade} 
             />
           </div>
         </div>

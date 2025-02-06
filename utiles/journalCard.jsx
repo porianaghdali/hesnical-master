@@ -49,8 +49,8 @@ const JournalCard = ({
         }),
          fill: {
             target: 'origin',
-            above: 'rgba(75, 192, 192, 0.2)',   // Area will be red above the origin
-            below: 'rgba(192, 75, 192, 0.2)'    // And blue below the origin
+            above: 'rgba(75, 192, 192, 0.3)',   // Area will be red above the origin
+            below: 'rgba(192, 75, 75, 0.1)'    // And blue below the origin
           },
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
