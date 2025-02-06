@@ -12,7 +12,6 @@ export const UserProvider = ({ children }) => {
   const [error, setError] = useState(null); // وضعیت خطا
   const token = Cookies.get("access_token");
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
   useEffect(() => {
     // بررسی و دریافت اطلاعات کاربر فقط بعد از رندر شدن در سمت کلاینت
     if (token) {
@@ -67,7 +66,7 @@ export const UserProvider = ({ children }) => {
   }
 
   return (
-    <UserContext.Provider value={{ UserData, loading, UserActivities,error }}>
+    <UserContext.Provider value={{ UserData, loading, UserActivities,error,token }}>
       {children}
     </UserContext.Provider>
   );

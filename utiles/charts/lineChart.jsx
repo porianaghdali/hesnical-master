@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import React from 'react';
-import { Line } from 'react-chartjs-2';
+import React from "react";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,11 +11,19 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-const LineChart = ({data,options}) => {
+const LineChart = ({ data, options }) => {
   // const data = {
   //   labels: ['January', 'February', 'March', 'April', 'May', 'June'],
   //   datasets: [
@@ -43,7 +51,7 @@ const LineChart = ({data,options}) => {
   // };
 
   return (
-    <div  className="p-4 bg-white rounded-lg shadow-md">
+    <div className="p-4 bg-white rounded-lg shadow-md">
       <Line data={data} options={options} />
     </div>
   );
