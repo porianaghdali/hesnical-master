@@ -12,7 +12,7 @@
 
 import React from 'react';
 
-const Card = ({ title, value,backgroundColor }) => {
+const Card = React.memo(({ backgroundColor, title, value }) => {
   return (
     <div style={{background:backgroundColor}} className=" shadow-lg rounded-lg p-6 m-4 max-w-xs w-full">
       <div className="text-xl font-semibold text-white mb-4">
@@ -23,6 +23,6 @@ const Card = ({ title, value,backgroundColor }) => {
       </div>
     </div>
   );
-};
+})
 
 export default Card;

@@ -12,51 +12,119 @@ import { useUser } from "@/context/UserContext";
 import { useMemo, useState } from "react";
 
 const Dashboard = () => {
-  const { UserData, UserActivities } = useUser();
-
-  const activities = UserActivities?.data.$values || [];
-  const datesArray = activities.map((item) => new Date(item.time * 1000));
-
-
-  const profitsArray = activities.map(
-    (item) => item.profit 
-  );
-  const commissionsArray = activities.map(
-    (item) => item.commission 
-  );
+  const { UserData, UserActivities, UserDailyProfit,WinRate,AverageWin } = useUser();
+const activities = UserActivities?.data.$values || [];
+const DailyProfit = UserDailyProfit?.data?.balanceList?.$values || [];
+const profitToLossRatio = UserDailyProfit?.data?.profitToLossRatio || [];
 
 
-  const Gross_Profit = profitsArray?.reduce((total, number) =>number>=0? total + number:total, 0);
-  const Gross__Loss = profitsArray?.reduce((total, number) =>number<0? total + number:total, 0);
-
-
-
-  const feesArray = activities.map(
-    (item) => item.fee
-  );
-  const totalFee = feesArray?.reduce((total, number) => total + number, 0);
-  const totalCommission = commissionsArray?.reduce((total, number) => total + number, 0);
-
+console.log('%capp\(UserDashboard)\dashboard\page.jsx:18 WinRate', 'color: #007acc;', AverageWin);
+// محاسبات مشترک
+const trades = activities.map((trade) => ({
+  time: new Date(trade.time * 1000),
+  profit: trade.profit,
+}));
+const datesArray = trades.map((item) => item.time);
+const tradsArray = trades.map((item) => item.profit);
+const profitsArray = activities.map((item) => item.profit).filter((profit) => profit > 0);
+const LosssArray = activities.map((item) => item.profit).filter((profit) => profit < 0);
+const feesArray = activities.map((item) => item.fee);
+const commissionsArray = activities.map((item) => item.commission);
+const NetProfitDaysArray = DailyProfit.map((item) => item.netProfit);
+const WinningDaysArray = NetProfitDaysArray.filter((netProfit) => netProfit > 0);
+const LosingDaysArray = NetProfitDaysArray.filter((netProfit) => netProfit < 0);
+const symbolsArray = activities.map((item) => item.symbol);
+const typesArray = activities.map((item) => item.type);
 
 
 
+const Gross_Profit = useMemo(() => profitsArray.reduce((total, number) => total + number, 0), [profitsArray]);
+const Gross__Loss = useMemo(() => LosssArray.reduce((total, number) => total + number, 0), [LosssArray]);
+const totalFee = useMemo(() => feesArray.reduce((total, number) => total + number, 0), [feesArray]);
+const totalCommission = useMemo(() => commissionsArray.reduce((total, number) => total + number, 0), [commissionsArray]);
+const totalNetProfit = useMemo(() => UserDailyProfit?.data?.profit, [UserDailyProfit]);
+const totalWinningDays = useMemo(() => WinningDaysArray.reduce((total, number) => total + number, 0), [WinningDaysArray]);
+const totalLosingDays = useMemo(() => LosingDaysArray.reduce((total, number) => total + number, 0), [LosingDaysArray]);
+
+const calculateSymbolsCount = (symbolsArray) => {
+  return symbolsArray.reduce((acc, curr) => {
+    acc[curr] = (acc[curr] || 0) + 1;
+    return acc;
+  }, {});
+};
+
+const calculateSymbolsVolume = (activities) => {
+  return activities.reduce((acc, item) => {
+    acc[item.symbol] = (acc[item.symbol] || 0) + item.volume;
+    return acc;
+  }, {});
+};
+
+const calculateSymbolsProfit = (activities) => {
+  return activities.reduce((acc, item) => {
+    acc[item.symbol] = (acc[item.symbol] || 0) + item.profit;
+    return acc;
+  }, {});
+};
+
+const symbolsCount = useMemo(() => calculateSymbolsCount(symbolsArray), [symbolsArray]);
+const symbolsVolume = useMemo(() => calculateSymbolsVolume(activities), [activities]);
+const symbolsProfit = useMemo(() => calculateSymbolsProfit(activities), [activities]);
 
 
 
-  const symbolsArray = activities.map((item) => item.symbol);
-  const typesArray = activities.map((item) => item.type);
-  const symbolsCount = useMemo(() => {
-    return symbolsArray.reduce((acc, curr) => {
-      acc[curr] = (acc[curr] || 0) + 1;
-      return acc;
-    }, {});
-  }, [symbolsArray]);
-  const symbolsVolume = useMemo(() => {
-    return activities.reduce((acc, item) => {
-      acc[item.symbol] = (acc[item.symbol] || 0) + item.volume;
-      return acc;
-    }, {});
-  }, [activities]);
+ const [filterType, setFilterType] = useState("none");
+
+
+
+const filterDataByType = useMemo(() => {
+  if (filterType === "none") {
+    return {
+      labels: trades.map((date) => date.toLocaleString()),
+      profits: tradsArray,
+    };
+  }
+
+  const filteredData = {};
+  datesArray.forEach((date, index) => {
+    let key;
+    if (filterType === "daily") {
+      key = date.toLocaleDateString();
+    } else if (filterType === "weekly") {
+      const weekStart = new Date(date);
+      weekStart.setDate(date.getDate() - date.getDay());
+      key = `${weekStart.getFullYear()}-${weekStart.getMonth() + 1}-${weekStart.getDate()}`;
+    } else if (filterType === "monthly") {
+      key = `${date.getFullYear()}-${date.getMonth() + 1}`;
+    }
+
+    if (!filteredData[key]) {
+      filteredData[key] = 0;
+    }
+    filteredData[key] += tradsArray[index];
+  });
+
+  return filteredData;
+}, [datesArray, tradsArray, filterType]);
+
+
+
+
+
+
+
+
+  const tradeTypes = useMemo(() => {
+    return typesArray.reduce(
+      (acc, type) => {
+        if (type === 0) acc.Buy++;
+        else acc.Sell++;
+        return acc;
+      },
+      { Buy: 0, Sell: 0 }
+    );
+  }, [typesArray]);
+
   const volumeBySymbolData = {
     labels: Object.keys(symbolsVolume),
     datasets: [
@@ -69,12 +137,6 @@ const Dashboard = () => {
       },
     ],
   };
-  const symbolsProfit = useMemo(() => {
-    return activities.reduce((acc, item) => {
-      acc[item.symbol] = (acc[item.symbol] || 0) + item.profit;
-      return acc;
-    }, {});
-  }, [activities]);
   const profitBySymbolData = {
     labels: Object.keys(symbolsProfit),
     datasets: [
@@ -87,39 +149,7 @@ const Dashboard = () => {
       },
     ],
   };
-  const tradeTypes = useMemo(() => {
-    return typesArray.reduce(
-      (acc, type) => {
-        if (type === 0) acc.Buy++;
-        else acc.Sell++;
-        return acc;
-      },
-      { Buy: 0, Sell: 0 }
-    );
-  }, [typesArray]);
-  const averageProfitPerTrade = useMemo(() => {
-    const totalProfit = profitsArray.reduce((acc, profit) => acc + profit, 0);
-    return (totalProfit / profitsArray.length).toFixed(2);
-  }, [profitsArray]);
-  const maxProfitTrade = useMemo(
-    () => Math.max(...profitsArray),
-    [profitsArray]
-  );
-  const minProfitTrade = useMemo(
-    () => Math.min(...profitsArray),
-    [profitsArray]
-  );
-  const tradeHours = useMemo(() => {
-    return activities.reduce((acc, item) => {
-      const hour = new Date(item.time * 1000).getHours();
-      acc[hour] = (acc[hour] || 0) + 1;
-      return acc;
-    }, {});
-  }, [activities]);
-  const winRate = useMemo(() => {
-    const winningTrades = profitsArray.filter((profit) => profit > 0).length;
-    return ((winningTrades / profitsArray.length) * 100).toFixed(2);
-  }, [profitsArray]);
+
   const symbols_Count_data = {
     labels: Object.keys(symbolsCount),
     datasets: [
@@ -144,12 +174,13 @@ const Dashboard = () => {
       },
     ],
   };
-  const tradeHoursData = {
-    labels: Object.keys(tradeHours).map((hour) => `${hour}:00`),
+
+  const tradeDayssData = {
+    labels: DailyProfit.map((item) => item.date.split("T")[0]),
     datasets: [
       {
         label: "تعداد معاملات بر اساس ساعت",
-        data: Object.values(tradeHours),
+        data: NetProfitDaysArray,
         backgroundColor: "rgba(153, 102, 255, 0.2)",
         borderColor: "rgba(153, 102, 255, 1)",
         borderWidth: 1,
@@ -219,7 +250,7 @@ const Dashboard = () => {
     datasets: [
       {
         label: ["ضریب برد معاملات"],
-        data: [winRate, 100 - winRate],
+        data: [WinRate, 100 - WinRate],
         backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)"],
         borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"],
         borderWidth: 1,
@@ -276,40 +307,8 @@ const Dashboard = () => {
       },
     },
   };
-  const [filterType, setFilterType] = useState("none");
-  const filterDataByType = useMemo(() => {
-    if (filterType === "none") {
-      // اگر فیلتر none باشد، تمام داده‌ها را به صورت لحظه‌ای برگردان
-      return {
-        labels: datesArray.map((date) => date.toLocaleString()),
-        profits: profitsArray,
-      };
-    }
 
-    const filteredData = {};
-    datesArray.forEach((date, index) => {
-      let key;
-      if (filterType === "daily") {
-        key = date.toLocaleDateString();
-      } else if (filterType === "weekly") {
-        const weekStart = new Date(date);
-        weekStart.setDate(date.getDate() - date.getDay());
-        key = `${weekStart.getFullYear()}-${
-          weekStart.getMonth() + 1
-        }-${weekStart.getDate()}`;
-      } else if (filterType === "monthly") {
-        key = `${date.getFullYear()}-${date.getMonth() + 1}`;
-      }
-
-      if (!filteredData[key]) {
-        filteredData[key] = 0;
-      }
-      filteredData[key] += profitsArray[index];
-    });
-
-    return filteredData;
-  }, [datesArray, profitsArray, filterType]);
-
+ 
   const filteredChartData = {
     labels:
       filterType === "none"
@@ -337,7 +336,7 @@ const Dashboard = () => {
               }`,
         data:
           filterType === "none"
-            ? profitsArray // نمایش تمام سود و زیان‌ها
+            ? tradsArray // نمایش تمام سود و زیان‌ها
             : Object.values(filterDataByType),
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgba(54, 162, 235, 1)",
@@ -345,12 +344,8 @@ const Dashboard = () => {
       },
     ],
   };
-  const trades = activities?.map((trade) => ({
-    time: trade.time,
-    profit: trade.profit,
-  }));
 
-  if (!UserData) {
+  if (!UserActivities || !activities||!DailyProfit) {
     return <div>در حال بارگذاری...</div>;
   }
 
@@ -395,44 +390,69 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-6 gap-4 p-10">
-        <div  className="col-span-6 lg:col-span-6">
-          <div className="grid grid-cols-4 gap-4">
+        <div className="col-span-6 lg:col-span-6">
+          <div className="grid grid-cols-3 xl:grid-cols-6 gap-4">
+            {/* Net P&L */}
             <Card
               backgroundColor="rgba(13, 110, 253, 1)"
               title="سود یا زیان خالص"
-              value={Math.round(Gross_Profit+Gross__Loss-totalFee-totalCommission*100)/100} 
+              value={
+                Math.round(
+                  (Gross_Profit + Gross__Loss - totalFee - totalCommission) *
+                    100
+                ) / 100
+              }
             />
+            {/* Trade Win % */}
             <Card
               backgroundColor="rgba(255, 193, 7, 1)"
               title="ضریب برد معاملات"
-              value={winRate}
+              value={WinRate?.data}
             />
+            {/* Profit Factor */}
             <Card
               backgroundColor="rgba(220, 53, 69, 1)"
               title="نسبت سود به زیان"
-              value={Math.abs(Math.round(Gross_Profit*100/Gross__Loss)/100)}
+              value={Math.abs(
+                ((profitToLossRatio)) 
+              )}
             />
+
+            {/* Day Win % */}
             <Card
               backgroundColor="rgba(220, 53, 69, 1)"
               title="بیشترین سود در یک معامله"
-              value={maxProfitTrade} 
+              value={(WinningDaysArray.length * 100) / DailyProfit.length}
             />
+            {/* Avg Win Trades */}
             <Card
               backgroundColor="rgba(13, 202, 240, 1)"
-              title="بیشترین ضرر در یک معامله"
-              value={minProfitTrade} 
+              title="میانگین سود   "
+              value={
+                Math.round((totalWinningDays / WinningDaysArray.length) * 100) /
+                100
+              }
+            />
+            {/* Avg Loss Trades */}
+            <Card
+              backgroundColor="rgba(13, 202, 240, 1)"
+              title="میانگین ضرر   "
+              value={
+                Math.round((totalLosingDays / LosingDaysArray.length) * 100) /
+                100
+              }
             />
           </div>
         </div>
-
+        {/* Daily Net Cumulative P&L Linear Chart */}
         <div dir="ltr" className="col-span-6 lg:col-span-3">
           <LineChart data={filteredChartData} options={options} />
         </div>
-
+        {/* Net Daily P&L Column Chart */}
         <div dir="ltr" className="col-span-6 lg:col-span-3">
-          <BarChart data={tradeHoursData} options={options} />
+          <BarChart data={tradeDayssData} options={options} />
         </div>
-
+     
         <div dir="ltr" className="col-span-6 lg:col-span-3">
           <BarChart data={buySellPerSymbol} options={options} />
         </div>

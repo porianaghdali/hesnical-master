@@ -8,6 +8,10 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [UserData, setUserData] = useState(null);
   const [UserActivities, setUserActivities] = useState(null);
+  const [UserDailyProfit, setUserDailyProfit] = useState([]);
+  const [WinRate, setWinRate] = useState([]);
+  const [AverageWin, setAverageWin] = useState([]);
+
   const [loading, setLoading] = useState(true); // وضعیت بارگذاری
   const [error, setError] = useState(null); // وضعیت خطا
   const token = Cookies.get("access_token");
@@ -31,10 +35,7 @@ export const UserProvider = ({ children }) => {
           setLoading(false); // بارگذاری تکمیل شد
           console.error("Error fetching user data:", err);
         });
-    } else {
-      setLoading(false); // بارگذاری تکمیل شد حتی اگر توکن نباشد
-    }
-    if (token) {
+
       axios
         .get(apiUrl + "/api/v1/TradeDeal/GetAll", {
           headers: {
@@ -43,11 +44,57 @@ export const UserProvider = ({ children }) => {
           },
         })
         .then((res) => {
-            setUserActivities(res.data);
+          setUserActivities(res.data);
           setLoading(false); // بارگذاری تکمیل شد
         })
         .catch((err) => {
           setError("Error fetching user data");
+          setLoading(false); // بارگذاری تکمیل شد
+          console.error("Error fetching user data:", err);
+        });
+
+      axios
+        .get(apiUrl + "/api/v1/TradeDeal/NetDailyPprfitAndLoss", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          setUserDailyProfit(res);
+          setLoading(false); // بارگذاری تکمیل شد
+        })
+        .catch((err) => {
+          setLoading(false); // بارگذاری تکمیل شد
+          console.error("Error fetching user data:", err);
+        });
+      axios
+        .get(apiUrl + "/api/v1/TradeDeal/ProfitabilityRatio", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          setWinRate(res);
+          setLoading(false); // بارگذاری تکمیل شد
+        })
+        .catch((err) => {
+          setLoading(false); // بارگذاری تکمیل شد
+          console.error("Error fetching user data:", err);
+        });
+      axios
+        .get(apiUrl + "/api/v1/TradeDeal/averageWin", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          setAverageWin(res.data);
+          setLoading(false); // بارگذاری تکمیل شد
+        })
+        .catch((err) => {
           setLoading(false); // بارگذاری تکمیل شد
           console.error("Error fetching user data:", err);
         });
@@ -66,7 +113,9 @@ export const UserProvider = ({ children }) => {
   }
 
   return (
-    <UserContext.Provider value={{ UserData, loading, UserActivities,error,token }}>
+    <UserContext.Provider
+      value={{ UserData, loading, UserActivities, error, token, UserDailyProfit,WinRate,AverageWin }}
+    >
       {children}
     </UserContext.Provider>
   );
