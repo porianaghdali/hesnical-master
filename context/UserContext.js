@@ -9,8 +9,6 @@ export const UserProvider = ({ children }) => {
   const [UserData, setUserData] = useState(null);
   const [UserActivities, setUserActivities] = useState(null);
   const [UserDailyProfit, setUserDailyProfit] = useState([]);
-  const [WinRate, setWinRate] = useState([]);
-  const [AverageWin, setAverageWin] = useState([]);
 
   const [loading, setLoading] = useState(true); // وضعیت بارگذاری
   const [error, setError] = useState(null); // وضعیت خطا
@@ -68,36 +66,7 @@ export const UserProvider = ({ children }) => {
           setLoading(false); // بارگذاری تکمیل شد
           console.error("Error fetching user data:", err);
         });
-      axios
-        .get(apiUrl + "/api/v1/TradeDeal/ProfitabilityRatio", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          setWinRate(res);
-          setLoading(false); // بارگذاری تکمیل شد
-        })
-        .catch((err) => {
-          setLoading(false); // بارگذاری تکمیل شد
-          console.error("Error fetching user data:", err);
-        });
-      axios
-        .get(apiUrl + "/api/v1/TradeDeal/averageWin", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          setAverageWin(res.data);
-          setLoading(false); // بارگذاری تکمیل شد
-        })
-        .catch((err) => {
-          setLoading(false); // بارگذاری تکمیل شد
-          console.error("Error fetching user data:", err);
-        });
+     
     } else {
       setLoading(false); // بارگذاری تکمیل شد حتی اگر توکن نباشد
     }
@@ -114,7 +83,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ UserData, loading, UserActivities, error, token, UserDailyProfit,WinRate,AverageWin }}
+      value={{ UserData, loading, UserActivities, error, token, UserDailyProfit }}
     >
       {children}
     </UserContext.Provider>
