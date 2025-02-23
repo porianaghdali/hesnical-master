@@ -14,6 +14,7 @@ import {
   Legend,
 } from "chart.js";
 import AreaChart from "./charts/AreaChart";
+import Link from "next/link";
 
 ChartJS.register(
   CategoryScale,
@@ -33,7 +34,7 @@ const JournalCard = ({
   totalProfit,
   totalLoss,
   commission,
-  groupedTrades,
+  groupedTrades,id
 }) => {
   const data = {
     labels: groupedTrades.map((item) => {
@@ -66,12 +67,13 @@ const JournalCard = ({
         <div className={netProfit > 0 ? "text-green-500" : "text-red-500"}>
           NET P/L: {Math.round(netProfit * 100) / 100}
         </div>
-        <button
+        <Link
+        href={`/journal/${id}`}
           className="
 "
         >
           view note
-        </button>
+        </Link>
       </div>
       <hr />
       <div className=" grid grid-cols-6 gap-2">

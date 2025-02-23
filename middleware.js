@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 export function middleware(request) {
   // چک کردن وجود کوکی‌های access_token
   const token = request.cookies.get("access_token");
-  console.log("%cappmiddleware.js:9 token", "color: #007acc;", token);
   // اگر توکن موجود باشد، کاربر به صفحه داشبورد هدایت می‌شود
   if (token) {
     try {
@@ -15,7 +14,6 @@ export function middleware(request) {
 
       // اگر توکن معتبر باشد، به صفحه داشبورد هدایت می‌شود
       if (decoded) {
-        console.log("%cappmiddleware.js:19 miidlll", "color: #007acc;");
 
         return NextResponse.redirect(new URL("/dashboard", request.url));
       }

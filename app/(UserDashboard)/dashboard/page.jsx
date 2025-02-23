@@ -4,7 +4,6 @@ import DoughnutChart from "@/utiles/charts/doughnutChart";
 import LineChart from "@/utiles/charts/lineChart";
 import PieChart from "@/utiles/charts/pieChart";
 import PolarAreaChart from "@/utiles/charts/polarAreaChart";
-import RadarChart from "@/utiles/charts/radarChart";
 import GaugeChart from "@/utiles/charts/gaugeChart";
 import PersianCalendar from "@/utiles/calendar";
 import Card from "@/utiles/card";
@@ -14,31 +13,38 @@ import axios from "axios";
 const Dashboard = () => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  const { UserData, UserActivities, UserDailyProfit,token } =
-    useUser();
-    const [avgWin,setAvgWin]=useState([])
-    useEffect(()=>{
-      axios
-      .get(apiUrl + "/api/v1/TradeDeal/averageWin", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        setAvgWin(res.data);
-        // setLoading(false); // بارگذاری تکمیل شد
-      })
-      .catch((err) => {
-        setError("Error fetching user data");
-        // setLoading(false); // بارگذاری تکمیل شد
-        // console.error("Error fetching user data:", err);
-      }); 
-    },[token])
+  const { UserData, UserActivities, UserDailyProfit, token } = useUser();
+  useEffect(() => {}, [token]);
+
+  const [avgWin, setAvgWin] = useState({
+    "$id": "1",
+    "avgWin": 309.10952380952347,
+    "avgLoss": -625.5877304964544,
+    "tradeCount": 782,
+    "winCount": 294,
+    "lossCount": 282,
+    "lossSumValue": -176415.74000000014,
+    "winSumValue": 90878.1999999999
+  });
+
+  // useEffect(() => {
+  //   axios
+  //     .get(apiUrl + "/api/v1/TradeDeal/averageWin", {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       setAvgWin(res.data);
+  //     })
+  //     .catch((err) => {
+
+  //     });
+  // }, [token]);
   const activities = UserActivities?.data.$values || [];
-  const DailyProfit = UserDailyProfit?.data?.balanceList?.$values || [];
-  const ProfitToLossRatio = UserDailyProfit?.data?.profitToLossRatio || [];
-  console.log('%capp\(UserDashboard)\dashboard\page.jsx:42 DailyProfit', 'color: #007acc;', UserDailyProfit?.data);
+  console.log('%capp\(UserDashboard)\dashboard\page.jsx:20 activities', 'color: #007acc;', activities);
+  console.log('%capp\(UserDashboard)\dashboard\page.jsx:20 UserDailyProfit', 'color: #007acc;', UserDailyProfit);
   // محاسبات مشترک
   const trades = activities.map((trade) => ({
     time: new Date(trade.time * 1000),
@@ -46,53 +52,11 @@ const Dashboard = () => {
   }));
   const datesArray = trades.map((item) => item.time);
   const tradsArray = trades.map((item) => item.profit);
-  //   const profitsArray = activities
-  //   .map((item) => item.profit)
-  //   .filter((profit) => profit > 0);
-  // const LosssArray = activities
-  //   .map((item) => item.profit)
-  //   .filter((profit) => profit < 0);
-  // const feesArray = activities.map((item) => item.fee);
-  // const commissionsArray = activities.map((item) => item.commission);
-  const NetProfitDaysArray = DailyProfit.map((item) => item.netProfit);
-  // const WinningDaysArray = NetProfitDaysArray.filter(
-  //   (netProfit) => netProfit > 0
-  // );
-  // const LosingDaysArray = NetProfitDaysArray.filter(
-  //   (netProfit) => netProfit < 0
-  // );
+
+  const NetProfitDaysArray = UserDailyProfit?.balanceList?.$values.map((item) => item.netProfit);
+
   const symbolsArray = activities.map((item) => item.symbol);
   const typesArray = activities.map((item) => item.type);
-
-  // const Gross_Profit = useMemo(
-  //   () => profitsArray.reduce((total, number) => total + number, 0),
-  //   [profitsArray]
-  // );
-  // const Gross__Loss = useMemo(
-  //   () => LosssArray.reduce((total, number) => total + number, 0),
-  //   [LosssArray]
-  // );
-  // const totalFee = useMemo(
-  //   () => feesArray.reduce((total, number) => total + number, 0),
-  //   [feesArray]
-  // );
-  // const totalCommission = useMemo(
-  //   () => commissionsArray.reduce((total, number) => total + number, 0),
-  //   [commissionsArray]
-  // );
-  // const totalNetProfit = useMemo(
-  //   () => UserDailyProfit?.data?.profit,
-  //   [UserDailyProfit]
-  // );
-  // const totalWinningDays = useMemo(
-  //   () => WinningDaysArray.reduce((total, number) => total + number, 0),
-  //   [WinningDaysArray]
-  // );
-  // const totalLosingDays = useMemo(
-  //   () => LosingDaysArray.reduce((total, number) => total + number, 0),
-  //   [LosingDaysArray]
-  // );
-
   const calculateSymbolsCount = (symbolsArray) => {
     return symbolsArray.reduce((acc, curr) => {
       acc[curr] = (acc[curr] || 0) + 1;
@@ -222,7 +186,7 @@ const Dashboard = () => {
   };
 
   const tradeDayssData = {
-    labels: DailyProfit.map((item) => item.date.split("T")[0]),
+    labels: UserDailyProfit?.balanceList?.$values.map((item) => item.date.split("T")[0]),
     datasets: [
       {
         label: "تعداد معاملات بر اساس ساعت",
@@ -296,7 +260,10 @@ const Dashboard = () => {
     datasets: [
       {
         label: ["ضریب برد معاملات"],
-        data: [Math.round(avgWin.winCount*100/avgWin.tradeCount)  , 100 - Math.round(avgWin.winCount*100/avgWin.tradeCount)  ],
+        data: [
+          Math.round((avgWin.winCount * 100) / avgWin.tradeCount),
+          100 - Math.round((avgWin.winCount * 100) / avgWin.tradeCount),
+        ],
         backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)"],
         borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"],
         borderWidth: 1,
@@ -390,10 +357,9 @@ const Dashboard = () => {
     ],
   };
 
-  if (!UserActivities || !activities || !DailyProfit) {
+  if (!UserActivities || !activities ||avgWin.length==0) {
     return <div>در حال بارگذاری...</div>;
   }
-
   return (
     <div className="">
       <h1 className="text-2xl font-bold">داشبورد</h1>
@@ -433,7 +399,6 @@ const Dashboard = () => {
           ماهانه
         </button>
       </div>
-
       <div className="grid grid-cols-6 gap-4 p-10">
         <div className="col-span-6 lg:col-span-6">
           <div className="grid grid-cols-3 xl:grid-cols-6 gap-4">
@@ -441,40 +406,42 @@ const Dashboard = () => {
             <Card
               backgroundColor="rgba(13, 110, 253, 1)"
               title="سود یا زیان خالص"
-              value={
-                Math.round(UserDailyProfit?.data?.profit*100) / 100
-              }
+              value={Math.round(UserDailyProfit?.profit * 100) / 100}
             />
             {/* Trade Win % */}
             <Card
               backgroundColor="rgba(255, 193, 7, 1)"
               title="ضریب برد معاملات"
-              value={Math.round(avgWin.winCount*100/avgWin.tradeCount)/100  }
+              value={
+                Math.round((avgWin.winCount * 100) / avgWin.tradeCount) / 100
+              }
             />
             {/* Profit Factor */}
             <Card
               backgroundColor="rgba(220, 53, 69, 1)"
               title="نسبت سود به زیان"
-              value={Math.abs(ProfitToLossRatio)}
+              value={Math.round(Math.abs(UserDailyProfit?.profitToLossRatio) * 100) / 100}
             />
 
             {/* Day Win % */}
             <Card
               backgroundColor="rgba(220, 53, 69, 1)"
               title="Day Win"
-              value={Math.round(avgWin.winCount*100/avgWin.tradeCount)/100  }
+              value={
+                Math.round((avgWin.winCount * 100) / avgWin.tradeCount) / 100
+              }
             />
             {/* Avg Win Trades */}
             <Card
               backgroundColor="rgba(13, 202, 240, 1)"
               title="میانگین سود "
-              value={avgWin.avgWin}
+              value={Math.round(avgWin.avgWin * 100) / 100}
             />
             {/* Avg Loss Trades */}
             <Card
               backgroundColor="rgba(13, 202, 240, 1)"
               title="میانگین ضرر   "
-              value={avgWin.avgLoss}
+              value={Math.round(avgWin.avgLoss * 100) / 100}
             />
           </div>
         </div>
@@ -520,7 +487,7 @@ const Dashboard = () => {
         </div>
 
         <div dir="ltr" className="col-span-6 lg:col-span-6 grid justify-center">
-          <PersianCalendar trades={trades} />{" "}
+          <PersianCalendar trades={UserDailyProfit?.balanceList?.$values?UserDailyProfit?.balanceList?.$values:[]} />{" "}
         </div>
       </div>
     </div>
