@@ -1,11 +1,10 @@
 "use client";
-
+import { useState } from "react";
 import { useUser } from "@/context/UserContext";
 import JournalCard from "@/utiles/journalCard";
 const Journal = ({}) => {
   const { UserData, UserDailyProfit } = useUser();
   const DailyProfit = UserDailyProfit?.balanceList?.$values || [];
-
   console.log(
     "%capp(UserDashboard)journalpage.jsx:16 DailyProfit",
     "color: #007acc;",
@@ -20,6 +19,7 @@ const Journal = ({}) => {
       <h1 className="text-2xl font-bold">trades</h1>
       <h1 className="text-2xl font-bold">{UserData?.data.firstName}</h1>
       <div className="grid gap-2">
+        
         {DailyProfit.map((item, key) => {
           return (
             <div className="border p-4 rounded-lg shadow-lg" key={key}>

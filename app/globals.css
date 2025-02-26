@@ -6,13 +6,46 @@
 }
 @font-face {
   font-family: "Raavi";
-  src: url(../public/fonts/Pro/Ravi-Medium.otf),
+  src: url(../public/fonts/Pro/Ravi-Medium.ttf),
     url(../public/fonts/Pro/Ravi-Medium.ttf),
-    url(../public/fonts/Pro/Ravi-Light.otf),
-    url(../public/fonts/Pro/Ravi-Regular.otf),
     url(../public/fonts/Pro/RaviFaNum-Bold.ttf),
-    url(../public/fonts/Pro/RaviNoEn-Black.otf),
     url(../public/fonts/Pro/Ravi-Regular.ttf);
+}
+@font-face {
+  font-family: "Raavi";
+  src: url(../public/fonts/Pro/Ravi-Thin.ttf) format("truetype");
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raavi";
+  src: url(../public/fonts/Pro/Ravi-Regular.ttf) format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raavi";
+  src: url(../public/fonts/Pro/Ravi-Regular.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raavi";
+  src: url(../public/fonts/Pro/Ravi-Medium.ttf) format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raavi";
+  src: url(../public/fonts/Pro/Ravi-SemiBold.ttf) format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raavi";
+  src: url(../public/fonts/Pro/Ravi-Bold.ttf) format("truetype");
+  font-weight: 700;
+  font-style: normal;
 }
 
 body {

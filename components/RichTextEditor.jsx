@@ -3,7 +3,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 
-export default function RichTextEditor({ value }) {
+export default function         RichTextEditor({ value }) {
   const editor = useEditor({
     extensions: [StarterKit, Highlight],
     content: value,
