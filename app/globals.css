@@ -55,3 +55,11 @@ body {
   :root {
   }
 }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* مخفی کردن اسکرول‌بار در Firefox */
+.scrollbar-hide {
+  scrollbar-width: none !important;
+}

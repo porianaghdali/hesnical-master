@@ -1,4 +1,4 @@
-.rmdp-day span {
+.styledcal .rmdp-day span {
   border-radius: 8px !important;
   /* background-color: transparent !important;  */
   /* bottom: auto !important; */
@@ -11,7 +11,7 @@
 
     right: 0 !important;
 }
-.rmdp-day {
+.styledcal .rmdp-day {
   border: 0.1px solid gainsboro;
   margin: 1.5px;
   border-radius: 8px !important;
@@ -20,29 +20,29 @@
   color: black !important;
 }
 
-.rmdp-day.rmdp-selected span:not(.highlight) {
+.styledcal .rmdp-day.rmdp-selected span:not(.highlight) {
   border-radius: 8px !important;
   color: black;
   
   box-shadow: 0 0 0px #8798ad !important;
 }
-.rmdp-day.rmdp-selected {
+.styledcal .rmdp-day.rmdp-selected {
   border-radius: 8px !important;
   color: black;
   box-shadow: 0 0 3px #8798ad !important;
 }
 
-.rmdp-day:hover {
+.styledcal .rmdp-day:hover {
   background-color: rgb(221, 217, 217) !important;
   color: black !important;
   border-radius: 8px !important;
 }
-.rmdp-week {
+.styledcal .rmdp-week {
   display: grid !important;
   justify-content: space-between !important;
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
-.rmdp-week-day {
+.styledcal .rmdp-week-day {
   width: auto !important;
   margin: 1.5px;
   border: 0.1px gainsboro solid;

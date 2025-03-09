@@ -5,7 +5,7 @@ import LineChart from "@/utiles/charts/lineChart";
 import PieChart from "@/utiles/charts/pieChart";
 import PolarAreaChart from "@/utiles/charts/polarAreaChart";
 import GaugeChart from "@/utiles/charts/gaugeChart";
-import PersianCalendar from "@/utiles/calendar";
+import PersianCalendar from "@/app/(UserDashboard)/dashboard/calendar/calendar";
 import Card from "@/utiles/card";
 import { useUser } from "@/context/UserContext";
 import { useEffect, useMemo, useState } from "react";
@@ -486,7 +486,7 @@ const Dashboard = () => {
           <PieChart data={tradeTypeData} options={options} />
         </div>
 
-        <div dir="ltr" className="col-span-6 lg:col-span-6 grid justify-center">
+        <div dir="ltr" className="col-span-6 lg:col-span-6 grid justify-center styledcal">
           <PersianCalendar trades={UserDailyProfit?.balanceList?.$values?UserDailyProfit?.balanceList?.$values:[]} />{" "}
         </div>
       </div>

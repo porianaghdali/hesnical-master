@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 const Sidebar = () => {
   const { UserData, token } = useUser();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const pathname = usePathname();
   const Svg = (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
@@ -32,6 +32,15 @@ const Sidebar = () => {
       </g>
     </svg>
   );
+  const menuItems=[
+    {title:"داشبورد",href:"/dashboard"},
+    {title:"معاملات",href:"/trades"},
+    {title:"دیلی ژورنال",href:"/journal"},
+    {title:"گزارشات",href:"/reports"},
+    {title:"تنظیمات",href:"/setting"
+
+    },
+  ]
   return (
     <>
       <div
@@ -56,24 +65,19 @@ const Sidebar = () => {
           {isOpen ? <p>Sidebar</p> : Demo}
         </Link>
         <ul>
-          <li>
+          {menuItems.map((item,key)=>{
+            return(
+              <li key={key}>
             <Link
-              href="/dashboard"
-              className= {pathname=="/dashboard"?"bg-gray-700 block py-2 px-4":"block py-2 px-4 over:bg-gray-700"}
+              href={item.href}
+              className= {pathname==item.href?"bg-gray-700 block py-2 px-4 rounded":"block py-2 px-4 over:bg-gray-700 rounded"}
             >
-              {isOpen ? <p>داشبورد</p> : Demo}
+              {isOpen ? <p>{item.title}</p> : Demo}
             </Link>
           </li>
-          <li>
-            <Link href="/trades"  className= {pathname=="/trades"?"bg-gray-700 block py-2 px-4":"block py-2 px-4 over:bg-gray-700"}>
-              {isOpen ? <p>معاملات</p> : Demo}
-            </Link>
-          </li>
-          <li>
-            <Link href="/journal"  className= {pathname=="/journal"?"bg-gray-700 block py-2 px-4":"block py-2 px-4 over:bg-gray-700"}>
-              {isOpen ? <p>ژورنال</p> : Demo}
-            </Link>
-          </li>
+            )
+          })}
+         
         </ul>
         <div className="absolute w-full right-0 p-4   bottom-0">
           <Link
