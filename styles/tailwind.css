@@ -1,0 +1,79 @@
+@layer components {
+    .primary-button {
+      @apply inline-flex items-center justify-center px-4 py-2 font-semibold text-sm rounded-md border-2 transition-all duration-200;
+      color: var(--Component-colors-Components-Buttons-Primary-button-primary-fg, #fff);
+      font-size: var(--Font-size-text-sm, 14px);
+      font-weight: 600;
+      line-height: var(--Line-height-text-sm, 20px);
+      gap: var(--spacing-xs, 4px);
+      border-color: var(--Gradient-skeuemorphic-gradient-border, rgba(255, 255, 255, 0.12));
+      background: var(--Component-colors-Components-Buttons-Primary-button-primary-bg, #8658d7);
+      box-shadow:
+        0px 0px 0px 1px var(--Colors-Effects-Shadows-shadow-skeumorphic-inner-border, rgba(10, 13, 18, 0.18)) inset,
+        0px -2px 0px 0px var(--Colors-Effects-Shadows-shadow-skeumorphic-inner, rgba(10, 13, 18, 0.05)) inset,
+        0px 1px 2px 0px var(--Colors-Effects-Shadows-shadow-xs, rgba(10, 13, 18, 0.05));
+    }
+  
+    .primary-button:hover {
+      background: var(--Component-colors-Components-Buttons-Primary-button-primary-bg_hover, #713FC2);
+    }
+  
+    .primary-button:focus {
+      box-shadow:
+        0px 0px 0px 1px var(--Colors-Effects-Shadows-shadow-skeumorphic-inner-border, rgba(10, 13, 18, 0.18)) inset,
+        0px -2px 0px 0px var(--Colors-Effects-Shadows-shadow-skeumorphic-inner, rgba(10, 13, 18, 0.05)) inset,
+        0px 1px 2px 0px var(--Colors-Effects-Shadows-shadow-xs, rgba(10, 13, 18, 0.05)),
+        0px 0px 0px 2px var(--Colors-Background-bg-primary, #FFF),
+        0px 0px 0px 4px var(--Colors-Effects-Focus-rings-focus-ring, #9270E2);
+    }
+  
+    .primary-button:disabled {
+      border-color: var(--Colors-Border-border-disabled_subtle, #E9EAEB);
+      background: var(--Colors-Background-bg-disabled, #F5F5F5);
+      color: var(--Colors-Foreground-fg-disabled, #A4A7AE);
+      box-shadow: 0px 1px 2px 0px var(--Colors-Effects-Shadows-shadow-xs, rgba(10, 13, 18, 0.05));
+      cursor: not-allowed;
+    }
+  
+    .secondary-gray-button {
+      @apply inline-flex items-center justify-center px-4 py-2 text-base font-semibold rounded-md border transition-all duration-200;
+      padding: 10px var(--spacing-xl, 16px);
+      gap: var(--spacing-sm, 6px);
+      border-radius: var(--radius-md, 8px);
+      border: 1px solid var(--Component-colors-Components-Buttons-Secondary-button-secondary-border, #D5D7DA);
+      background: var(--Component-colors-Components-Buttons-Secondary-button-secondary-bg, #FFF);
+      color: var(--Component-colors-Components-Buttons-Secondary-button-secondary-fg, #414651);
+      font-family: var(--Font-family-font-family-body, "Ravi FaNum");
+      font-size: var(--Font-size-text-md, 16px);
+      font-weight: 600;
+      line-height: var(--Line-height-text-md, 24px);
+      box-shadow:
+        0px 0px 0px 1px var(--Colors-Effects-Shadows-shadow-skeumorphic-inner-border, rgba(10, 13, 18, 0.18)) inset,
+        0px -2px 0px 0px var(--Colors-Effects-Shadows-shadow-skeumorphic-inner, rgba(10, 13, 18, 0.05)) inset,
+        0px 1px 2px 0px var(--Colors-Effects-Shadows-shadow-xs, rgba(10, 13, 18, 0.05));
+    }
+  
+    .secondary-gray-button:hover {
+      border-color: var(--Component-colors-Components-Buttons-Secondary-button-secondary-border_hover, #D5D7DA);
+      background: var(--Component-colors-Components-Buttons-Secondary-button-secondary-bg_hover, #FAFAFA);
+      color: var(--Component-colors-Components-Buttons-Secondary-button-secondary-fg_hover, #252B37);
+    }
+  
+    .secondary-gray-button:focus {
+      box-shadow:
+        0px 0px 0px 1px var(--Colors-Effects-Shadows-shadow-skeumorphic-inner-border, rgba(10, 13, 18, 0.18)) inset,
+        0px -2px 0px 0px var(--Colors-Effects-Shadows-shadow-skeumorphic-inner, rgba(10, 13, 18, 0.05)) inset,
+        0px 1px 2px 0px var(--Colors-Effects-Shadows-shadow-xs, rgba(10, 13, 18, 0.05)),
+        0px 0px 0px 2px var(--Colors-Background-bg-primary, #FFF),
+        0px 0px 0px 4px var(--Colors-Effects-Focus-rings-focus-ring, #9270E2);
+    }
+  
+    .secondary-gray-button:disabled {
+      border-color: var(--Colors-Border-border-disabled_subtle, #E9EAEB);
+      background: var(--Colors-Background-bg-primary, #FFF);
+      color: var(--Colors-Foreground-fg-disabled, #A4A7AE);
+      box-shadow: 0px 1px 2px 0px var(--Colors-Effects-Shadows-shadow-xs, rgba(10, 13, 18, 0.05));
+      cursor: not-allowed;
+    }
+  }
+  

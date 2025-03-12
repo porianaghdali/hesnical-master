@@ -3,6 +3,12 @@ import { useState } from "react";
 import { useUser } from "@/context/UserContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import {accounts,
+  dashboard,
+  journal,
+  trades,
+  reports}from "../utiles/sideBarSvg"
 const Sidebar = () => {
   const { UserData, token } = useUser();
   const [isOpen, setIsOpen] = useState(true);
@@ -32,19 +38,18 @@ const Sidebar = () => {
       </g>
     </svg>
   );
-  const menuItems=[
-    {title:"داشبورد",href:"/dashboard"},
-    {title:"معاملات",href:"/trades"},
-    {title:"دیلی ژورنال",href:"/journal"},
-    {title:"گزارشات",href:"/reports"},
-    {title:"تنظیمات",href:"/setting"
-
-    },
-  ]
+  const menuItems = [
+    { title: "حساب های معاملاتی", href: "/accounts",svg:accounts },
+    { title: "داشبورد", href: "/dashboard",svg:dashboard },
+    { title: "دیلی ژورنال", href: "/journal" ,svg:journal},
+    { title: "معاملات", href: "/trades" ,svg:trades},
+    { title: "گزارشات", href: "/reports" ,svg:dashboard},
+    { title: "تنظیمات", href: "/setting" ,svg:reports},
+  ];
   return (
     <>
       <div
-        className={` bg-[#120C3C] text-white h-screen p-4 transition-all duration-300  z-30 relative ${
+        className={` bg-white text-white h-screen p-4 transition-all duration-300  z-30 relative ${
           isOpen ? "w-64" : "w-16"
         }`}
       >
@@ -58,26 +63,43 @@ const Sidebar = () => {
         >
           {Svg}
         </button>
-        <Link
-          href="/dashboard"
-          className=" text-xl font-bold mb-4  hover:bg-gray-700"
-        >
-          {isOpen ? <p>Sidebar</p> : Demo}
-        </Link>
+        <div className="mb-16">
+          <Link href="/dashboard" className=" text-xl font-bold mb-16    ">
+            {isOpen ? (
+              <Image
+                src="/img/sideBarLog.png"
+                width={32}
+                height={32}
+                alt="hesnical-logo"
+              />
+            ) : (
+              Demo
+            )}
+          </Link>
+        </div>
         <ul>
-          {menuItems.map((item,key)=>{
-            return(
+          {menuItems.map((item, key) => {
+            return (
               <li key={key}>
-            <Link
-              href={item.href}
-              className= {pathname==item.href?"bg-gray-700 block py-2 px-4 rounded":"block py-2 px-4 over:bg-gray-700 rounded"}
-            >
-              {isOpen ? <p>{item.title}</p> : Demo}
-            </Link>
-          </li>
-            )
+                <Link
+                  href={item.href}
+                  className={
+                    pathname == item.href
+                      ? "flex gap-2 bg-[#FAFAFA]  py-2 px-4 rounded"
+                      : "flex gap-2  py-2 px-4 over:bg-gray-700 rounded"
+                  }
+                ><span>{item.svg}</span>
+                  {isOpen ? (
+                    <p className="text-[#414651] leading-6 text-[16px] font-semibold">
+                      {item.title}
+                    </p>
+                  ) : (
+                    Demo
+                  )}
+                </Link>
+              </li>
+            );
           })}
-         
         </ul>
         <div className="absolute w-full right-0 p-4   bottom-0">
           <Link

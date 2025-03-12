@@ -1,6 +1,8 @@
 "use client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { back } from "./svg";
 
 export default function Register() {
   const router = useRouter();
@@ -68,201 +70,215 @@ export default function Register() {
   };
 
   const renderStep1 = () => (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-center mb-6">اطلاعات شخصی</h2>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">نام</label>
+    <div className=" p-6 ">
+      <p className="text-4xl mb-3 font-semibold leading-10 text-#181D27 ">
+        {" "}
+        ایجاد حساب کاربری
+      </p>
+      <p className="text-[16px] leading-6 text-[#535862] mb-8">
+        خوش آمدید! لطفا ایمیل خود را وارد کنید.
+      </p>
+      <div className=" grid gap-1.5 mb-8">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
+          ایمیل
+        </label>
         <input
           type="text"
-          id="firstName"
-          name="firstName"
+          id="email"
+          name="email"
+          placeholder="ایمیل خود را وارد کنید"
           value={formData.firstName}
           onChange={handleChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          className="w-full py-2.5 px-3.5 border-[1px] border-[#D5D7DA] rounded-lg outline-[#9270E2]"
           required
         />
       </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          نام خانوادگی
-        </label>
-        <input
-          type="text"
-          id="lastName"
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          کد ملی
-        </label>
-        <input
-          type="text"
-          id="nationalCode"
-          name="nationalCode"
-          value={formData.nationalCode}
-          onChange={handleChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          حساب کاربری
-        </label>
-        <input
-          type="text"
-          id="account"
-          name="account"
-          value={formData.account}
-          onChange={handleChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          کلمه عبور سرمایه گذاری
-        </label>
-        <input
-          type="text"
-          id="investmentPassword"
-          name="investmentPassword"
-          value={formData.investmentPassword}
-          onChange={handleChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">سرور</label>
-        <input
-          type="text"
-          id="server"
-          name="server"
-          value={formData.server}
-          onChange={handleChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          required
-        />
-      </div>
+
       <button
         onClick={() => setStep(2)}
-        className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition mt-4"
+        style={{
+          boxShadow:
+            "0px 1px 2px 0px var(--Colors-Effects-Shadows-shadow-xs, rgba(10, 13, 18, 0.05))",
+        }}
+        className="w-full mb-8 bg-[#F5F5F5] text-[#A4A7AE] px-4 py-2.5 text-[16px] font-semibold  rounded-lg border-[1px] border-[#E9EAEB]  hover:bg-[#8658D7] hover:text-white"
       >
         مرحله بعد
       </button>
+      <p className=" leading-5 text-sm text-[#535862] flex gap-1">
+        حساب کاربری دارید؟
+        <Link
+          href="/login"
+          className="text-sm leading-5 font-semibold text-[#713FC2]"
+        >
+          ورود
+        </Link>
+      </p>
     </div>
   );
 
   const renderStep2 = () => (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-center mb-6">اطلاعات حساب</h2>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">ایمیل</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          نام کاربری
-        </label>
-        <input
-          type="text"
-          id="userName"
-          name="userName"
-          value={formData.userName}
-          onChange={handleChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          رمز عبور
-        </label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          تایید رمز عبور
-        </label>
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          شماره تلفن
-        </label>
-        <input
-          type="text"
-          id="phoneNumber"
-          name="phoneNumber"
-          value={formData.phoneNumber}
-          onChange={handleChange}
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          required
-        />
-      </div>
-      <button
-        onClick={handleSubmit}
-        className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition mt-4"
-      >
-        ثبت‌نام
-      </button>
-      <button
-        onClick={() => setStep(1)}
-        className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600 transition mt-4"
-      >
-        بازگشت به مرحله قبلی
-      </button>
-      <div className="text-center mt-4">
-        <p>
-          قبلاً حساب کاربری دارید؟{" "}
-          <a
-            href="/login" // لینک به صفحه ورود
-            className="text-blue-500 hover:text-blue-700"
+    <>
+      <div className=" p-6 ">
+        <button onClick={() => setStep(1)} className="mb-8">
+          {back}
+        </button>
+
+        <p className="text-4xl mb-3 font-semibold leading-10 text-#181D27 ">
+          {" "}
+          ایجاد حساب کاربری
+        </p>
+        <p className="text-[16px] leading-6 text-[#535862] mb-8">
+          کد تایید به ایمیل شما ارسال شد.
+        </p>
+        <div className=" grid gap-1.5 mb-8">
+          <label
+            htmlFor="otpCode"
+            className=" text-sm font-medium flex gap-1 text-gray-700"
           >
-            ورود به حساب
-          </a>
+            <span className="text-[#8658D7]">*</span>
+            کد تایید
+          </label>
+          <input
+            type="text"
+            id="otpCode"
+            name="otpCode"
+            placeholder="کد تایید را وارد کنید"
+            value={formData.firstName}
+            onChange={handleChange}
+            className="w-full py-2.5 px-3.5 border-[1px] border-[#D5D7DA] rounded-lg outline-[#9270E2]"
+            required
+          />
+        </div>
+
+        <button
+          onClick={() => setStep(3)}
+          style={{
+            boxShadow:
+              "0px 1px 2px 0px var(--Colors-Effects-Shadows-shadow-xs, rgba(10, 13, 18, 0.05))",
+          }}
+          className="w-full mb-8 bg-[#F5F5F5] text-[#A4A7AE] px-4 py-2.5 text-[16px] font-semibold  rounded-lg border-[1px] border-[#E9EAEB]  hover:bg-[#8658D7] hover:text-white"
+        >
+          تایید{" "}
+        </button>
+        <p className=" leading-5 text-sm text-[#535862] flex gap-1">
+          کد تایید را دریافت نکردید؟{" "}
+          <Link
+            href="/login"
+            className="text-sm leading-5 font-semibold text-[#713FC2]"
+          >
+            ارسال مجدد{" "}
+          </Link>
         </p>
       </div>
-    </div>
+    </>
+  );
+  const renderStep3 = () => (
+    <>
+      <div className=" p-6 ">
+        <button onClick={() => setStep(2)} className="mb-8">
+          {back}
+        </button>
+
+        <p className="text-4xl mb-3 font-semibold leading-10 text-#181D27 ">
+          {" "}
+          اطلاعات فردی{" "}
+        </p>
+        <p className="text-[16px] leading-6 text-[#535862] mb-8">
+          لطفا طلاعات فردی را تکمیل کنید.
+        </p>
+        <div className=" grid gap-1.5 mb-8">
+          <label
+            htmlFor="name"
+            className=" text-sm font-medium flex gap-1 text-gray-700"
+          >
+            نام و نام خانوادگی{" "}
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="نام و نام خانوادگی وارد کنید."
+            value={formData.firstName}
+            onChange={handleChange}
+            className="w-full py-2.5 px-3.5 border-[1px] border-[#D5D7DA] rounded-lg outline-[#9270E2]"
+            required
+          />
+        </div>
+        <div className=" grid gap-1.5 mb-8">
+          <label
+            htmlFor="password"
+            className=" text-sm font-medium flex gap-1 text-gray-700"
+          >
+            <span className="text-[#8658D7]">*</span>
+            رمز عبور{" "}
+          </label>
+          <input
+            type="text"
+            id="password"
+            name="password"
+            placeholder="رمز عبور را وارد کنید."
+            value={formData.firstName}
+            onChange={handleChange}
+            className="w-full py-2.5 px-3.5 border-[1px] border-[#D5D7DA] rounded-lg outline-[#9270E2]"
+            required
+          />
+          <label
+            className="text-sm leading-5 text-[#535862]"
+            htmlFor="password"
+          >
+            رمز عبور بهتر است ترکیبی از حروف انگلیسی (بزرگ و کوچک)، اعداد و
+            کاراکترهای خاص (نمادها) باشد.
+          </label>
+        </div>
+
+        <div className=" grid gap-1.5 mb-8">
+          <label
+            htmlFor="confirme"
+            className=" text-sm font-medium flex gap-1 text-gray-700"
+          >
+            <span className="text-[#8658D7]">*</span>
+            تایید رمز عبور{" "}
+          </label>
+          <input
+            type="text"
+            id="confirme"
+            name="confirme"
+            placeholder="تایید رمز عبور را وارد کنید."
+            value={formData.firstName}
+            onChange={handleChange}
+            className="w-full py-2.5 px-3.5 border-[1px] border-[#D5D7DA] rounded-lg outline-[#9270E2]"
+            required
+          />
+        </div>
+
+        <button
+          onClick={() => setStep(4)}
+          style={{
+            boxShadow:
+              "0px 1px 2px 0px var(--Colors-Effects-Shadows-shadow-xs, rgba(10, 13, 18, 0.05))",
+          }}
+          className="w-full mb-8 bg-[#F5F5F5] text-[#A4A7AE] px-4 py-2.5 text-[16px] font-semibold  rounded-lg border-[1px] border-[#E9EAEB]  hover:bg-[#8658D7] hover:text-white"
+        >
+          تایید{" "}
+        </button>
+      </div>
+    </>
   );
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="w-full max-w-md">
           {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
           {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
-          {step === 1 ? renderStep1() : renderStep2()}
+          {step === 1
+            ? renderStep1()
+            : step === 2
+            ? renderStep2()
+            : renderStep3()}
         </div>
       </div>
     </>

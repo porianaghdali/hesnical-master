@@ -171,7 +171,7 @@ export default function Login() {
           </span>
         </div>
         <div className="mb-4">
-          <a href="/"  className="text-sm text-[#713FC2] font-semibold">رمز عبور را فراموش کرده اید؟</a>
+          <Link href="/forgetPassword"  className="text-sm text-[#713FC2] font-semibold">رمز عبور را فراموش کرده اید؟</Link>
         </div>
         {error && <p className="text-red-500 text-sm">{error}</p>}
         <button

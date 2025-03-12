@@ -10,6 +10,7 @@ import Card from "@/utiles/card";
 import { useUser } from "@/context/UserContext";
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import {calendar} from "../../../utiles/dummy"
 const Dashboard = () => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -17,14 +18,14 @@ const Dashboard = () => {
   useEffect(() => {}, [token]);
 
   const [avgWin, setAvgWin] = useState({
-    "$id": "1",
-    "avgWin": 309.10952380952347,
-    "avgLoss": -625.5877304964544,
-    "tradeCount": 782,
-    "winCount": 294,
-    "lossCount": 282,
-    "lossSumValue": -176415.74000000014,
-    "winSumValue": 90878.1999999999
+    $id: "1",
+    avgWin: 309.10952380952347,
+    avgLoss: -625.5877304964544,
+    tradeCount: 782,
+    winCount: 294,
+    lossCount: 282,
+    lossSumValue: -176415.74000000014,
+    winSumValue: 90878.1999999999,
   });
 
   // useEffect(() => {
@@ -43,8 +44,6 @@ const Dashboard = () => {
   //     });
   // }, [token]);
   const activities = UserActivities?.data.$values || [];
-  console.log('%capp\(UserDashboard)\dashboard\page.jsx:20 activities', 'color: #007acc;', activities);
-  console.log('%capp\(UserDashboard)\dashboard\page.jsx:20 UserDailyProfit', 'color: #007acc;', UserDailyProfit);
   // محاسبات مشترک
   const trades = activities.map((trade) => ({
     time: new Date(trade.time * 1000),
@@ -53,7 +52,9 @@ const Dashboard = () => {
   const datesArray = trades.map((item) => item.time);
   const tradsArray = trades.map((item) => item.profit);
 
-  const NetProfitDaysArray = UserDailyProfit?.balanceList?.$values.map((item) => item.netProfit);
+  const NetProfitDaysArray = UserDailyProfit?.balanceList?.$values.map(
+    (item) => item.netProfit
+  );
 
   const symbolsArray = activities.map((item) => item.symbol);
   const typesArray = activities.map((item) => item.type);
@@ -186,7 +187,9 @@ const Dashboard = () => {
   };
 
   const tradeDayssData = {
-    labels: UserDailyProfit?.balanceList?.$values.map((item) => item.date.split("T")[0]),
+    labels: UserDailyProfit?.balanceList?.$values.map(
+      (item) => item.date.split("T")[0]
+    ),
     datasets: [
       {
         label: "تعداد معاملات بر اساس ساعت",
@@ -357,15 +360,44 @@ const Dashboard = () => {
     ],
   };
 
-  if (!UserActivities || !activities ||avgWin.length==0) {
+
+const headerCardList=[
+  {
+    title:"سود یا زیان خالص",value:Math.round(UserDailyProfit?.profit * 100) / 100,des:"سود یا زیان نهایی پس از کسر کارمزد معاملات و هزینه‌های مالی است."
+  },
+  {
+    title:"درصد معاملات سودآور",value:Math.round((avgWin.winCount * 100) / avgWin.tradeCount) / 100,des:"درصد تریدهایی که در آن‌ها سود به‌دست آمده است."
+  },
+  {
+    title:"سود روزانه",value:Math.round(UserDailyProfit?.profit * 100) / 100,des:"میزان سود حاصل از معاملات در طول یک روز است."
+  },
+  {
+    title:"نسبت سود به زیان",value: Math.round(Math.abs(UserDailyProfit?.profitToLossRatio) * 100) /
+    100,des:"مقایسه سود و زیان برای ارزیابی عملکرد است"
+  },
+]
+
+  if (!UserActivities || !activities || avgWin.length == 0) {
     return <div>در حال بارگذاری...</div>;
   }
   return (
-    <div className="">
-      <h1 className="text-2xl font-bold">داشبورد</h1>
-      <h1 className="text-2xl font-bold">{UserData?.data.firstName}</h1>
-
-      <div className="flex gap-4 mb-4">
+    <div className="p-10">
+      <p className="text-2xl font-semibold  leading-8 text-[#181D27] py-4 border-b-[1px] border-[#E9EAEB] mb-6 ">داشبورد</p>
+<div>
+  <button
+  style={
+    {
+      boxShadow: "0px 0px 0px 1px var(--Colors-Effects-Shadows-shadow-skeumorphic-inner-border, rgba(10, 13, 18, 0.18)) inset, 0px -2px 0px 0px var(--Colors-Effects-Shadows-shadow-skeumorphic-inner, rgba(10, 13, 18, 0.05)) inset, 0px 1px 2px 0px var(--Colors-Effects-Shadows-shadow-xs, rgba(10, 13, 18, 0.05)), 0px 0px 0px 2px var(--Colors-Background-bg-primary, #FFF), 0px 0px 0px 4px var(--Colors-Effects-Focus-rings-focus-ring, #9270E2)"
+    }
+  }
+  className="flex mb-8 gap-1 items-center mr-auto px-[14px] py-2.5 rounded-lg border-[1px] border-[#D5D7DA] ">
+  {calendar}
+  <p className="font-semibold text-sm text-[#717680]">
+  انتخاب تاریخ
+ </p> </button>
+ 
+</div>
+      {/* <div className="flex gap-4 mb-4">
         <button
           onClick={() => setFilterType("none")}
           className={`px-4 py-2 rounded ${
@@ -398,51 +430,24 @@ const Dashboard = () => {
         >
           ماهانه
         </button>
-      </div>
-      <div className="grid grid-cols-6 gap-4 p-10">
-        <div className="col-span-6 lg:col-span-6">
-          <div className="grid grid-cols-3 xl:grid-cols-6 gap-4">
-            {/* Net P&L */}
-            <Card
-              backgroundColor="rgba(13, 110, 253, 1)"
-              title="سود یا زیان خالص"
-              value={Math.round(UserDailyProfit?.profit * 100) / 100}
-            />
-            {/* Trade Win % */}
-            <Card
-              backgroundColor="rgba(255, 193, 7, 1)"
-              title="ضریب برد معاملات"
-              value={
-                Math.round((avgWin.winCount * 100) / avgWin.tradeCount) / 100
-              }
-            />
-            {/* Profit Factor */}
-            <Card
-              backgroundColor="rgba(220, 53, 69, 1)"
-              title="نسبت سود به زیان"
-              value={Math.round(Math.abs(UserDailyProfit?.profitToLossRatio) * 100) / 100}
-            />
+      </div> */}
 
-            {/* Day Win % */}
-            <Card
-              backgroundColor="rgba(220, 53, 69, 1)"
-              title="Day Win"
-              value={
-                Math.round((avgWin.winCount * 100) / avgWin.tradeCount) / 100
-              }
+      <div className="grid grid-cols-6 gap-4 ">
+        <div className="col-span-6 lg:col-span-6">
+          <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+        {headerCardList.map((item,key)=>{
+          return <div key={key}><Card
+          
+              backgroundColor="rgba(13, 110, 253, 1)"
+              title={item.title}
+              value={item.value}
+              des={item.des}
             />
-            {/* Avg Win Trades */}
-            <Card
-              backgroundColor="rgba(13, 202, 240, 1)"
-              title="میانگین سود "
-              value={Math.round(avgWin.avgWin * 100) / 100}
-            />
-            {/* Avg Loss Trades */}
-            <Card
-              backgroundColor="rgba(13, 202, 240, 1)"
-              title="میانگین ضرر   "
-              value={Math.round(avgWin.avgLoss * 100) / 100}
-            />
+      </div>
+        })}
+           
+           
+        
           </div>
         </div>
         {/* Daily Net Cumulative P&L Linear Chart */}
@@ -486,8 +491,17 @@ const Dashboard = () => {
           <PieChart data={tradeTypeData} options={options} />
         </div>
 
-        <div dir="ltr" className="col-span-6 lg:col-span-6 grid justify-center styledcal">
-          <PersianCalendar trades={UserDailyProfit?.balanceList?.$values?UserDailyProfit?.balanceList?.$values:[]} />{" "}
+        <div
+          dir="ltr"
+          className="col-span-6 lg:col-span-6 grid justify-center styledcal"
+        >
+          <PersianCalendar
+            trades={
+              UserDailyProfit?.balanceList?.$values
+                ? UserDailyProfit?.balanceList?.$values
+                : []
+            }
+          />{" "}
         </div>
       </div>
     </div>
